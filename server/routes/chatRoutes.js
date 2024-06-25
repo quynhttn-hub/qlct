@@ -18,7 +18,7 @@ const { protectRoute } = require("../middleware/protectRoute");
 const router = express.Router();
 
 router.route("/").post(protect, accessChat);
-router.route("/").get(protect, fetchChats);
+router.route("/:id").get(protect, fetchChats);
 router.route("/find/:userID/:authID").get(protect, getChat);
 router.route("/myself/:id").get(protect, mySelfChat);
 router.route("/createfile").post(protect, createSheet);

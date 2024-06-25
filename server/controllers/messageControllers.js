@@ -82,44 +82,41 @@ const sendMessage = asyncHandler(async (req, res) => {
         });
       }
 
+      const sliceRemaining = content.slice(
+        mention.position,
+        category.value.length + category.position + 1
+      );
+      const remain = content.replace(sliceRemaining, "").trim();
+      let money;
+      let note = "";
+      // Bước 2: Tách chuỗi thành hai phần dựa trên khoảng trắng đầu tiên
 
-      if (mention.value === "chi tiêu") {
-        const sliceRemaining = content.slice(
-          mention.position,
-          category.value.length + category.position + 1
-        );
-        const remain = content.replace(sliceRemaining, "").trim();
-        let money;
-        let note = "";
-        // Bước 2: Tách chuỗi thành hai phần dựa trên khoảng trắng đầu tiên
+      const firstSpaceIndex = remain.indexOf(" ");
+      if (firstSpaceIndex === -1) {
+        money = convertStringToNumber(remain);
+        note = "";
+      } else {
+        money = convertStringToNumber(remain.substring(0, firstSpaceIndex));
+        note = remain.substring(firstSpaceIndex + 1);
+      }
 
-        const firstSpaceIndex = remain.indexOf(" ");
-        if (firstSpaceIndex === -1) {
-          money = convertStringToNumber(remain);
-          note = "";
-        } else {
-          money = convertStringToNumber(remain.substring(0, firstSpaceIndex));
-          note = remain.substring(firstSpaceIndex + 1);
-        }
-
-        if (!money) {
-          res.status(200).json({
-            message,
-            msg: `Vui lòng nhập số tiền bạn ${mention.value} `,
-          })
-        };
-        const remaining = await readRemaining(chat.sheetId);
-        if (remaining - money < 0) {
-          res.status(200).json({
-            message,
-            msg: "Không đủ tiền để chi tiêu",
-          });
-        } else {
-          res.status(200).json({
-            message,
-            // msg: "Không đủ tiền để chi tiêu",
-          });
-        }
+      if (!money) {
+        res.status(200).json({
+          message,
+          msg: `Vui lòng nhập số tiền bạn ${mention.value} `,
+        });
+      }
+      const remaining = await readRemaining(chat.sheetId);
+      if (mention.value == "chi tiêu" && remaining - money < 0) {
+        res.status(200).json({
+          message,
+          msg: "Không đủ tiền để chi tiêu",
+        });
+      } else {
+        res.status(200).json({
+          message,
+          // msg: "Không đủ tiền để chi tiêu",
+        });
       }
 
       // Sau 5 phút, lưu tin nhắn vào Google Sheets
@@ -150,7 +147,7 @@ const sendMessage = asyncHandler(async (req, res) => {
           .catch((error) => {
             console.log(error);
           });
-      }, 300000); // 5 phút = 300000 milliseconds
+      }, 3000); // 5 phút = 300000 milliseconds
 
       // }
     }

@@ -23,7 +23,6 @@ import { useAuthContext } from "../../Context/AuthContext";
 export function Sidebar() {
   const { myChat } = ChatState();
   const [fileLink, setFileLink] = useState();
-  // const { loading, createFile } = useCreateFile();
   const [loading, setLoading] = useState(false);
   const [categoryName, setCategoryName] = useState();
   const [incomeName, setIncomeName] = useState();
@@ -170,7 +169,7 @@ export function Sidebar() {
     axios
       .delete(`${apiUrl}/api/category/delete/${id}`, config)
       .then((res) => {
-        setMyCategory(myIncome.filter((item) => item._id !== id));
+        setMyCategory(myCategory.filter((item) => item._id !== id));
       })
       .catch((error) => {
         toast.error(error.response.data.message);

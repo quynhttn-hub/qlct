@@ -225,6 +225,7 @@ const writeGGSheet = async (
     // const remaining = sheet.getCellByA1("V6").value;
     // return remaining;
   } else if (mention == "lập kế hoạch") {
+    console.log(timeDayMonthYear, category, money);
     await sheet
       .addRow({
         "Thời gian": timeDayMonthYear,

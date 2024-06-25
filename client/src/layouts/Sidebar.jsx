@@ -39,7 +39,7 @@ function Sidebar() {
         },
       };
 
-      const { data } = await axios.get(`${apiUrl}/api/chat/`, config);
+      const { data } = await axios.get(`${apiUrl}/api/chat/${authUser._id}`, config);
       setChats(data);
     } catch (error) {
       toast.error(error.message);
@@ -166,7 +166,7 @@ function Sidebar() {
         </div>
       )}
 
-      {chats ? (
+      {chats.length > 0 ? (
         <div className="flex-1 overflow-y-auto pl-4 pr-4">
           {chats.map((chat) => {
             if (chat.users.length != 1)

@@ -127,6 +127,8 @@ const MentionInput = () => {
         config
       );
 
+      
+
       setMessages([...messages, data.message]);
       if (data.msg) {
         toast.warning(data.msg);

@@ -125,7 +125,7 @@ const EditInput = ({ m, setEdit, setMess }) => {
       // console.log(data.mention);
       setMess(data.message);
       setEdit(false);
-      toast.success("Message sent successfully");
+      // toast.success("Đã sửa tin nhắn");
     } catch (error) {
       if (error.response && error.response.status === 403) {
         toast.error(

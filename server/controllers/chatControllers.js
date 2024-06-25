@@ -117,12 +117,15 @@ const editChat = asyncHandler(async (req, res) => {
 //@access          Protected
 const fetchChats = asyncHandler(async (req, res) => {
   try {
-    Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
+    Chat.find({ users: { $elemMatch: { $eq: req.params.id } } })
       .populate("users", "-password")
       .populate("groupAdmin", "-password")
       .populate("latestMessage")
       .sort({ updatedAt: -1 })
       .then(async (results) => {
+        if (!results) {
+          return res.status(200).send([]);
+        }
         results = await User.populate(results, {
           path: "latestMessage.sender",
           select: "username avatar email",

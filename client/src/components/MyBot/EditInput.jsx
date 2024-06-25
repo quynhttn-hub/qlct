@@ -130,15 +130,18 @@ const EditInput = ({ m, setEdit, setMess }) => {
       // console.log(data.mention);
       setMess(data.message);
       setEdit(false);
-      toast.success("Message sent successfully");
+      // toast.success("Đã sửa tin nhắn");
     } catch (error) {
       if (error.response && error.response.status === 403) {
         toast.error(
           "Bạn chỉ có thể sửa tin nhắn trong vòng 5 phút kể từ khi gửi"
         );
+        
       } else {
-        console.error("There was an error editing the message!", error);
+        console.error("Đã có lỗi xảy ra", error);
       }
+      setEdit(false);
+
     }
     setLoading(false);
   };

@@ -5,6 +5,7 @@ const Friendship = require("../models/friendshipModel");
 const getFriends = asyncHandler(async (req, res) => {
   const userId = req.params.id;
 
+
   try {
     const user = await User.findById(userId).populate(
       "friends",
@@ -108,11 +109,15 @@ const acceptFriendRequest = asyncHandler(async (req, res) => {
 const getFriendRequests = asyncHandler(async (req, res) => {
   const userId = req.params.id;
 
+  console.log(userId);
+
+
   try {
     const user = await User.findById(userId).populate(
       "friend_requests",
       "username avatar"
     );
+
     if (!user) return res.status(404).json({ msg: "User not found" });
 
     // Lấy danh sách yêu cầu kết bạn và trả về với id, username, avatar
@@ -122,7 +127,9 @@ const getFriendRequests = asyncHandler(async (req, res) => {
       avatar: request.avatar,
     }));
 
-    res.json(friendRequests);
+    if (!friendRequests) res.json([]);
+
+    res.json( friendRequests);
   } catch (err) {
     res.status(500).json({ msg: "Server error" });
   }

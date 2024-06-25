@@ -5,16 +5,11 @@ import MentionInput from "../components/MyBot/test";
 import { MyCategoryProvider } from "../Context/MyCategoryContext";
 import Header from "../components/MyBot/Header";
 import { useAuthContext } from "../Context/AuthContext";
+import { ChatState } from "../Context/ChatProvider";
 
 const MyBot = () => {
   const { authUser } = useAuthContext();
-
-  useEffect(() => {
-    // Example of useEffect usage if needed
-    if (authUser) {
-      // Perform some action if authUser exists
-    }
-  }, [authUser]);
+  
 
   if (!authUser) return (
     <div >

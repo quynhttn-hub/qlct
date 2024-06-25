@@ -66,11 +66,9 @@ const updateUser = asyncHandler(async (req, res) => {
     user.password = newPassword;
   }
   if (user.username !== username) {
-    console.log("doi ussernaem");
     user.username = username;
   }
   if (user.avatar !== avatar) {
-    console.log("doi avatar");
     user.avatar = avatar;
   }
   const updatedUser = await user.save();

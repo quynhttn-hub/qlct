@@ -80,7 +80,7 @@ export function NotificationIcon() {
     //delete request
 
     setRequests(requests.filter((r) => r._id !== request._id));
-    redirect("/chats")
+    navigate("/chats");
     // console.log("hi em");
     // navigate("/notifications");
   };
