@@ -1,0 +1,7 @@
+/* custom-scrollbar.css */
+.custom-scrollbar {
+    scrollbar-width: thin;
+    /* Dành cho Firefox */
+    scrollbar-color: #F5F5F5;
+    /* Dành cho Firefox */
+}

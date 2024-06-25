@@ -1,0 +1,46 @@
+
+<svg xmlns="http://www.w3.org/2000/svg"
+     class="svg-snoweb svg-theme-light"
+     x="0"
+     y="0"
+     width="100%"
+     height="100%"
+     viewBox="0 0 100 100"
+     preserveAspectRatio="xMidYMid meet"
+>
+<defs>
+    <style>
+        
+            
+            
+            
+        
+
+        .svg-fill-primary {
+            fill: #1976D2;
+        }
+
+        .svg-fill-secondary {
+            fill: ;
+        }
+
+        .svg-fill-tertiary {
+            fill: ;
+        }
+
+        .svg-stroke-primary {
+            stroke: #1976D2;
+        }
+
+        .svg-stroke-secondary {
+            stroke: ;
+        }
+
+        .svg-stroke-tertiary {
+            stroke: ;
+        }
+    </style>
+</defs>
+    <path d="M26.4,26.4a7.9,7.9,0,0,0-7.9,7.9V50a7.9,7.9,0,0,0,7.9,7.9V34.3H65.7a7.8,7.8,0,0,0-7.8-7.9ZM34.3,50a7.9,7.9,0,0,1,7.8-7.9H73.6A7.9,7.9,0,0,1,81.5,50V65.7a7.9,7.9,0,0,1-7.9,7.9H42.1a7.8,7.8,0,0,1-7.8-7.9ZM57.9,65.7A7.9,7.9,0,1,0,50,57.9,7.8,7.8,0,0,0,57.9,65.7Z"
+          class="svg-fill-primary" fill-rule="evenodd"/>
+</svg>
