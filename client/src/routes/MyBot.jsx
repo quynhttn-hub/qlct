@@ -4,9 +4,19 @@ import MentionInput from "../components/MyBot/test";
 import { MyCategoryProvider } from "../Context/MyCategoryContext";
 import Header from "../components/MyBot/Header";
 import { useAuthContext } from "../Context/AuthContext";
+import { ChatState } from "../Context/ChatProvider";
+import { useEffect } from "react";
 
 const MyBot = () => {
   const { authUser } = useAuthContext();
+
+  const { myChat, setMyChat } = ChatState();
+
+  useEffect(() => {
+    if (authUser) {
+      setMyChat(authUser.myChat);
+    }
+  }, [authUser]);
   
 
   if (!authUser) return (

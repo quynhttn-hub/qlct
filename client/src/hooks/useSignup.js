@@ -10,7 +10,7 @@ const useSignup = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const { setAuthUser } = useAuthContext();
-  const {setMyChat} = ChatState();
+  const { setMyChat } = ChatState();
 
   const signup = async ({
     username,
@@ -38,6 +38,7 @@ const useSignup = () => {
         },
         config
       );
+
       setMyChat(data.myChat);
       localStorage.setItem("chat-user", JSON.stringify(data));
       setAuthUser(data);
