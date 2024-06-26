@@ -1,10 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Typography,
-  Input,
-  List,
-  Accordion,
-} from "@material-tailwind/react";
+import { Typography, Input, List, Accordion } from "@material-tailwind/react";
 import axios from "axios";
 import { ChatState } from "../../Context/ChatProvider";
 import { toast } from "react-toastify";
@@ -21,7 +16,7 @@ export const Categories = () => {
   const [categoryName, setCategoryName] = useState();
   const [incomeName, setIncomeName] = useState();
   const [members, setMembers] = useState([]);
-  const {authUser} = useAuthContext();
+  const { authUser } = useAuthContext();
 
   useEffect(() => {
     if (selectedChat) {
@@ -70,6 +65,7 @@ export const Categories = () => {
         )
         .then((res) => {
           setOurCategories([res.data, ...ourCategories]);
+          setCategoryName("");
           setVisableClick(true);
         })
         .catch((error) => {
@@ -77,7 +73,6 @@ export const Categories = () => {
           setVisableClick(true);
         });
     }
-    setCategoryName("");
   };
 
   const handleDeleteCategory = (id) => {

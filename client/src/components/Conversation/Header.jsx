@@ -30,7 +30,7 @@ const Header = ({ setOpen }) => {
 
   useEffect(() => {
     if (selectedChat) {
-      setFileLink(selectedChat?.sheetId);
+      setFileLink(selectedChat?.sheetLink);
     }
 
     if (selectedChat?.groupAdmin?._id == authUser._id) {
@@ -146,7 +146,6 @@ const Header = ({ setOpen }) => {
               </Typography>
             </div>
 
-              edit  
 
               {edit && (
               <EditGroup />
@@ -204,7 +203,6 @@ const Header = ({ setOpen }) => {
               Tổng chi tiêu:
             </Typography>
             <div className="flex gap-4">
-                ngày  
                 <Popover>
                 <PopoverHandler>
                   <button className="hover:text-blue-500">Ngày</button>
@@ -224,7 +222,6 @@ const Header = ({ setOpen }) => {
                 </PopoverContent>
               </Popover>  
 
-                Tuần  
                 <Popover>
                 <PopoverHandler>
                   <button className="hover:text-blue-500">Tuần</button>
@@ -244,7 +241,6 @@ const Header = ({ setOpen }) => {
                 </PopoverContent>
               </Popover>  
 
-                Tháng  
                 <Popover>
                 <PopoverHandler>
                   <button className="hover:text-blue-500">Tháng</button>

@@ -1,11 +1,5 @@
-import React, { useState, useEffect } from "react";
 import {
-  Navbar,
-  Collapse,
-  Button,
-  IconButton,
   Typography,
-  Input,
   Timeline,
   TimelineItem,
   TimelineConnector,
@@ -13,46 +7,14 @@ import {
   TimelineHeader,
 } from "@material-tailwind/react";
 import {
-  RectangleStackIcon,
-  UserCircleIcon,
-  CommandLineIcon,
-  Squares2X2Icon,
   BellIcon,
   ArchiveBoxIcon,
   CurrencyDollarIcon,
 } from "@heroicons/react/24/solid";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import Slider from "./Slider";
 
-function NavItem({ children }) {
-  return (
-    <li>
-      <Typography
-        as="a"
-        href="#"
-        variant="paragraph"
-        color="blue-gray"
-        className="text-blue-gray-700 font-medium flex items-center gap-2 "
-      >
-        {children}
-      </Typography>
-    </li>
-  );
-}
 
 function Landing() {
  
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen((cur) => !cur);
-
-
-  React.useEffect(() => {
-    window.addEventListener(
-      "resize",
-      () => window.innerWidth >= 960 && setOpen(false),
-    );
-  }, []);
-
   return (
     <div className="flex flex-col h-full w-full place-content-center gap-12">
       <div className="w-full container mx-auto px-4 text-center mb-8">
@@ -67,7 +29,7 @@ function Landing() {
         </Typography>
         <Typography
           variant="lead"
-          className="mx-auto w-full !text-gray-500 text-xs text-base"
+          className="mx-auto w-full !text-gray-500 text-base"
         >
           Công cụ thống kê lại chi tiêu, kế hoạch chi tiêu, thu nhập
         </Typography>

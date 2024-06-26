@@ -166,6 +166,7 @@ function Signup() {
               Email
             </Typography>
             <Input
+              type="email"
               color="blue"
               label="Email"
               size="lg"

@@ -1,11 +1,9 @@
-import  { useEffect } from "react";
 import { Sidebar } from "../components/MyBot/Sidebar";
 import MessageBox from "../components/MyBot/MessageBox";
 import MentionInput from "../components/MyBot/test";
 import { MyCategoryProvider } from "../Context/MyCategoryContext";
 import Header from "../components/MyBot/Header";
 import { useAuthContext } from "../Context/AuthContext";
-import { ChatState } from "../Context/ChatProvider";
 
 const MyBot = () => {
   const { authUser } = useAuthContext();
@@ -28,7 +26,6 @@ const MyBot = () => {
           <MessageBox className="flex-1" />
 
           <div className="mt-auto">
-            {/* <SimpleMentionEditor /> */}
             <MentionInput />
           </div>
         </div>

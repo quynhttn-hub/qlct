@@ -25,9 +25,9 @@ const createIncome = asyncHandler(async (req, res) => {
     throw new Error("Danh mục đã tồn tại!");
   }
 
-  if (chat.sheetId) {
+  if (chat.sheetLink) {
     // todo write income
-    // await writeCategory(name, chat.sheetId)
+    // await writeCategory(name, chat.sheetLink)
   }
 
   try {

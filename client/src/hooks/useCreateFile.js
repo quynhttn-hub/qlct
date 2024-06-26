@@ -27,7 +27,7 @@ const useCreateFile = () => {
         config
       );
       // setChat({...chat, sheetId: data.sheetId});
-      setFileLink(data.sheetId)
+      setFileLink(data.sheetLink)
     } catch (error) {
       toast.error(error.message);
     } finally {

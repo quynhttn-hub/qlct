@@ -15,12 +15,6 @@ const userSchema = mongoose.Schema(
 
     friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     friend_requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-
-    // isAdmin: {
-    //   type: Boolean,
-    //   required: true,
-    //   default: false,
-    // },
   },
   { timestaps: true }
 );

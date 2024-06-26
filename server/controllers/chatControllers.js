@@ -190,11 +190,11 @@ const createSheet = asyncHandler(async (req, res) => {
       })
     );
 
-    const sheetId = await createNewSheet(userEmails);
+    const sheetLink = await createNewSheet(userEmails);
 
     const updatedChat = await Chat.findByIdAndUpdate(
       chatId,
-      { sheetId },
+      { sheetLink },
       { new: true, runValidators: true }
     );
 
@@ -204,7 +204,7 @@ const createSheet = asyncHandler(async (req, res) => {
     // res.send({ sheetId });
 
     // Trả về danh sách email
-    res.status(200).json({ sheetLink: sheetId });
+    res.status(200).json({ sheetLink: sheetLink });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ msg: "Server error" });
@@ -326,8 +326,8 @@ const getSpending = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Chat Not Found");
   } else {
-    if (chat.sheetId) {
-      const spending = await readTotalSpending(chat.sheetId);
+    if (chat.sheetLink) {
+      const spending = await readTotalSpending(chat.sheetLink);
       res.json(spending);
     } else {
       res.json(0);

@@ -25,8 +25,8 @@ const useGetMySelfChat = () => {
       .then((res) => {
         setChat(res.data[0]);
         setSelectedConversation(res.data[0]);
-        if (res.data[0].sheetId) {
-          setFile(res.data[0].sheetId);
+        if (res.data[0].sheetLink) {
+          setFile(res.data[0].sheetLink);
         }
       })
       .catch((error) => {

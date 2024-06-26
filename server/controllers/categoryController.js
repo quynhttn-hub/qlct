@@ -28,8 +28,8 @@ const createCategory = asyncHandler(async (req, res) => {
     throw new Error("Danh mục đã tồn tại!");
   }
 
-  if (chat.sheetId) {
-    await writeCategory(name, chat.sheetId)
+  if (chat.sheetLink) {
+    await writeCategory(name, chat.sheetLink);
   }
 
   try {

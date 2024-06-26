@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Button,
   Dialog,
@@ -11,10 +11,8 @@ import {
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
-import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -92,6 +90,7 @@ function Login() {
               Email
             </Typography>
             <Input
+              type="email"
               color="blue"
               label="Email"
               size="lg"

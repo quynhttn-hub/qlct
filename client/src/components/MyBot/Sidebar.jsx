@@ -34,7 +34,7 @@ export function Sidebar() {
 
   useEffect(() => {
     if (myChat) {
-      setFileLink(myChat?.sheetId);
+      setFileLink(myChat?.sheetLink);
     }
   }, [myChat]);
 

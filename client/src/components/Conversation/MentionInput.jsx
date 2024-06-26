@@ -131,6 +131,7 @@ const MentionInput = () => {
           category: category,
           content: inputValue,
           chatId: selectedChat?._id,
+          writedUserEmail: authUser.email,
         },
         config
       );

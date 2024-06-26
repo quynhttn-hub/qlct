@@ -10,7 +10,7 @@ const chatModel = mongoose.Schema(
       ref: "Message",
     },
     groupAdmin: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    sheetId: {
+    sheetLink: {
       type: String,
       // required: true,
     },
@@ -18,7 +18,6 @@ const chatModel = mongoose.Schema(
       type: String,
       default:
         "https://res.cloudinary.com/piyushproj/image/upload/v1719113515/s4d5d0mju5t16cs8zpqn.png",
-      
     },
   },
   { timestamps: true }
