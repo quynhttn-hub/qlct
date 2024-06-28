@@ -10,7 +10,7 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
-import useLogin from "../hooks/useLogin";
+import useLogin from "../../hooks/useLogin";
 
 function Login() {
   const [email, setEmail] = useState("");
