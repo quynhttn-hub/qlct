@@ -101,6 +101,7 @@ const EditGroup = () => {
 
     // // console.log(authUser);
 
+
     const newUsers = selectedUsers;
     newUsers.push(authUser);
 
@@ -121,8 +122,9 @@ const EditGroup = () => {
         config
       );
 
-      console.log(data);
       setSelectedChat(data);
+
+
 
       setChats(
         chats.map((chat) => {

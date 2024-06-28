@@ -2,11 +2,6 @@ const asyncHandler = require("express-async-handler");
 const Message = require("../models/messageModel");
 const User = require("../models/userModel");
 const Chat = require("../models/chatModel");
-const {
-  convertStringToNumber,
-  writeGGSheet,
-  writeCategory,
-} = require("../googleSheet/googleSheetHandler");
 const Mention = require("../models/mentionModel");
 const Category = require("../models/categoryModel");
 
@@ -28,9 +23,6 @@ const createCategory = asyncHandler(async (req, res) => {
     throw new Error("Danh mục đã tồn tại!");
   }
 
-  if (chat.sheetLink) {
-    await writeCategory(name, chat.sheetLink);
-  }
 
   try {
     const newCategory = await Category.create({

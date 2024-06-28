@@ -2,11 +2,6 @@ const asyncHandler = require("express-async-handler");
 const Message = require("../models/messageModel");
 const User = require("../models/userModel");
 const Chat = require("../models/chatModel");
-const {
-  convertStringToNumber,
-  writeGGSheet,
-  writeCategory,
-} = require("../googleSheet/googleSheetHandler");
 const Mention = require("../models/mentionModel");
 const Category = require("../models/categoryModel");
 const Income = require("../models/incomeModel");
@@ -17,7 +12,8 @@ const createIncome = asyncHandler(async (req, res) => {
   const chat = await Chat.findById(chatId);
 
   const income = await Income.findOne({
-    name: { $regex: new RegExp(name, "i") },
+    chatId,
+    name: { $regex: new RegExp(`^${name}$`, "i") },
   });
 
   if (income) {
@@ -25,10 +21,6 @@ const createIncome = asyncHandler(async (req, res) => {
     throw new Error("Danh mục đã tồn tại!");
   }
 
-  if (chat.sheetLink) {
-    // todo write income
-    // await writeCategory(name, chat.sheetLink)
-  }
 
   try {
     const newIncome= await Income.create({

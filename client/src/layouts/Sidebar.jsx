@@ -193,8 +193,16 @@ function Sidebar() {
                         alt="avatar"
                       />
                       <div>
-                        <Typography variant="h6">{chat.chatName}</Typography>
-                        {chat.latestMessage && (
+                        <Typography variant="h6">
+                          {chat.isGroupChat
+                            ? chat.chatName
+                            : chat.users.length == 2
+                            ? chat.users[0]._id == authUser._id
+                              ? chat.users[1].username
+                              : chat.users[0].username
+                            : null}
+                        </Typography>
+                        {/* {chat.latestMessage && (
                           <Typography
                             variant="small"
                             color="gray"
@@ -206,9 +214,8 @@ function Sidebar() {
                                 "..."
                               : chat.latestMessage.content}
                           </Typography>
-                        )}
+                        )} */}
                       </div>
-                     
                     </div>
                   </ListItemPrefix>
                 </ListItem>

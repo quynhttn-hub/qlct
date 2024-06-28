@@ -106,7 +106,7 @@ const sendMessage = asyncHandler(async (req, res) => {
           msg: `Vui lòng nhập số tiền bạn ${mention.value} `,
         });
       }
-      const remaining = await readRemaining(chat.sheetId);
+      const remaining = await readRemaining(chat.sheetLink);
       if (mention.value == "chi tiêu" && remaining - money < 0) {
         res.status(200).json({
           message,
@@ -147,7 +147,7 @@ const sendMessage = asyncHandler(async (req, res) => {
           .catch((error) => {
             console.log(error);
           });
-      }, 3000); // 5 phút = 300000 milliseconds
+      }, 300000); // 5 phút = 300000 milliseconds
 
       // }
     }

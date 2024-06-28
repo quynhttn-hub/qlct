@@ -175,6 +175,7 @@ const writeGGSheet = async (
   sheetLink,
   writedUserEmail
 ) => {
+
   let money;
   let note = "";
   // Bước 2: Tách chuỗi thành hai phần dựa trên khoảng trắng đầu tiên
@@ -199,13 +200,13 @@ const writeGGSheet = async (
   // mở file sheet
   const file = new GoogleSpreadsheet(sheetId, jwt);
   await file.loadInfo();
-  var sheet = file.sheetsByIndex[3];
+  var sheet = file.sheetsByIndex[2];
   const timeDayMonthYear = getTime();
 
   const month = `Tháng ${new Date().getMonth() + 1}`;
 
   if (mention == "chi tiêu") {
-    sheet = file.sheetsByIndex[2];
+    sheet = file.sheetsByIndex[1];
     await sheet
 
       .addRow({
@@ -237,7 +238,7 @@ const writeGGSheet = async (
         console.log(error);
       });
   } else if (mention == "thu nhập") {
-    sheet = file.sheetsByIndex[4];
+    sheet = file.sheetsByIndex[3];
     await sheet
       .addRow({
         "Thời gian": timeDayMonthYear,
@@ -250,37 +251,13 @@ const writeGGSheet = async (
         console.log(error);
       });
   } else {
-    sheet = file.sheetsByIndex[5];
+    return null;
   }
 };
 
-const writeCategory = async (categoryName, sheetLink) => {
-  const name = categoryName.trim();
-  // mở file sheet
-  // lấy sheetId
-  let sheetId = "";
-  const regex = /\/d\/([a-zA-Z0-9-_]+)(?:\/|$)/;
-  const matches = sheetLink.match(regex);
-  if (matches && matches[1]) {
-    sheetId = matches[1];
-  }
 
-  // mở file sheet
-  const file = new GoogleSpreadsheet(sheetId, jwt);
-  await file.loadInfo();
-  const sheet = file.sheetsByIndex[1];
 
-  await sheet
-    .addRow({
-      "Thiết yếu": name,
-    })
-    .then(() => {
-      return 1;
-    })
-    .catch((error) => {
-      return error;
-    });
-};
+
 
 const readTotalSpending = async (sheetLink) => {
   // lấy sheetId
@@ -294,7 +271,7 @@ const readTotalSpending = async (sheetLink) => {
   // mở file sheet
   const file = new GoogleSpreadsheet(sheetId, jwt);
   await file.loadInfo();
-  const sheet = file.sheetsByIndex[2];
+  const sheet = file.sheetsByIndex[1];
   await sheet.loadCells("J2:L2");
 
   const day = sheet.getCellByA1("J2").value;
@@ -311,14 +288,12 @@ const readRemaining = async (sheetLink) => {
   const matches = sheetLink.match(regex);
   if (matches && matches[1]) {
     sheetId = matches[1];
-  } else {
-    return 0;
   }
 
   // mở file sheet
   const file = new GoogleSpreadsheet(sheetId, jwt);
   await file.loadInfo();
-  const sheet = file.sheetsByIndex[3];
+  const sheet = file.sheetsByIndex[2];
   await sheet.loadCells("G6:AN6");
 
   let remaining = 0;
@@ -369,7 +344,6 @@ module.exports = {
   createNewSheetForGroup,
   convertStringToNumber,
   writeGGSheet,
-  writeCategory,
   readTotalSpending,
   readRemaining,
 };

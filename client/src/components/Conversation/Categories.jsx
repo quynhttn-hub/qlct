@@ -64,14 +64,12 @@ export const Categories = () => {
         )
         .then((res) => {
           setOurCategories([res.data, ...ourCategories]);
-          setCategoryName("");
-          setVisableClick(true);
         })
         .catch((error) => {
           toast.error(error.response.data.message);
-          setVisableClick(true);
-        });
+        }).finally(() => setVisableClick(true));
     }
+    setCategoryName("");
   };
 
   const handleDeleteCategory = (id) => {
@@ -140,7 +138,7 @@ export const Categories = () => {
         <Input
           variant="static"
           placeholder="Thêm hạng mục"
-          value={incomeName}
+          value={categoryName}
           onChange={(e) => setCategoryName(e.target.value)}
         />
         <button
