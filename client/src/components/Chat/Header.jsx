@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import {
-  Badge,
   Avatar,
   Typography,
   Button,
@@ -32,7 +31,7 @@ const Header = ({ setOpen }) => {
       setFileLink(selectedChat?.sheetLink);
     }
 
-    if (selectedChat?.groupAdmin?._id == authUser._id) {
+    if (selectedChat.isGroupChat && selectedChat?.groupAdmin?._id == authUser._id) {
       setEdit(true);
     }
 

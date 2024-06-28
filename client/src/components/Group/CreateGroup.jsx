@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import {
   Button,
   Dialog,
@@ -7,7 +7,6 @@ import {
   CardFooter,
   Typography,
   Input,
-  Checkbox,
 } from "@material-tailwind/react";
 import { toast } from "react-toastify";
 import UserBadgeItem from "./UserBadgeItem";
@@ -18,8 +17,7 @@ import { useAuthContext } from "../../Context/AuthContext";
 import { apiUrl } from "../../../setupAxios";
 
 export function CreateGroup() {
-
-  const {chats, setChats} = ChatState();
+  const { chats, setChats } = ChatState();
   const { authUser } = useAuthContext();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -35,7 +33,7 @@ export function CreateGroup() {
 
   const handleGroup = (userToAdd) => {
     if (selectedUsers.includes(userToAdd)) {
-      setErrors({...errors, selectedUsers: "Người dùng đã được thêm"});
+      setErrors({ ...errors, selectedUsers: "Người dùng đã được thêm" });
       return;
     }
     setSelectedUsers([...selectedUsers, userToAdd]);
@@ -62,8 +60,11 @@ export function CreateGroup() {
         `${apiUrl}/api/user/${authUser._id}?search=${query}`,
         config
       );
+
+
+      const friends = data.filter(user => user.isFriend)
       setLoading(false);
-      setSearchResult(data);
+      setSearchResult(friends);
     } catch (error) {
       toast.error("Failed to Load the Search Results", {
         position: "bottom-left",
@@ -108,11 +109,8 @@ export function CreateGroup() {
         config
       );
 
-      console.log(data);
-      console.log(chats);
+      setChats([data, ...chats]);
 
-      setChats([...chats, data]);
-      
       toast.success("Tạo nhóm thành công", {
         position: "top-center",
       });
@@ -214,8 +212,6 @@ export function CreateGroup() {
                   />
                 ))
             )}
-
-           
           </CardBody>
           <CardFooter className="pt-0">
             <Button className="bg-blue-800" onClick={handleSubmit} fullWidth>

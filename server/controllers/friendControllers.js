@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 const Friendship = require("../models/friendshipModel");
 
+
 const getFriends = asyncHandler(async (req, res) => {
   const userId = req.params.id;
 
