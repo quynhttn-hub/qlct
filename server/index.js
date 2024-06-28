@@ -114,7 +114,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("new notification", (notification) => {
-    console.log(notification);
     var senderId = notification.sendId;
 
     socket.in(senderId).emit("notification recieved", {avatar: notification.avatar, username: notification.username, id: notification.id});

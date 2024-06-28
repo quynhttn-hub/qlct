@@ -7,7 +7,6 @@ import {
   CardFooter,
   Typography,
   Input,
-  Checkbox,
   Tooltip,
 } from "@material-tailwind/react";
 import { toast } from "react-toastify";
@@ -40,8 +39,11 @@ const EditGroup = () => {
   const handleOpen = () => setOpen(!open);
 
   const handleGroup = (userToAdd) => {
-    if (selectedUsers.includes(userToAdd)) {
-      toast.error("Người dùng đã được thêm");
+    console.log(selectedUsers, userToAdd);
+    if (
+      selectedUsers.find((u) => u._id === userToAdd.id || u.id === userToAdd.id)
+    ) {
+      setErrors({ ...errors, selectedUsers: "Người dùng đã được thêm" });
       return;
     }
     setSelectedUsers([...selectedUsers, userToAdd]);
@@ -118,10 +120,9 @@ const EditGroup = () => {
         },
         config
       );
-        
-        console.log(data);
-        setSelectedChat(data);
-        
+
+      console.log(data);
+      setSelectedChat(data);
 
       setChats(
         chats.map((chat) => {

@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { ChatState } from "../../Context/ChatProvider";
+import { ChatState } from "../../Context/ChatContext";
 import { toast } from "react-toastify";
 import { useOurCategoriesContext } from "../../Context/useOurCategories";
 import { apiUrl } from "../../../setupAxios";
 import { useAuthContext } from "../../Context/AuthContext";
 
-const EditInput = ({ m, setEdit, setMess }) => {
+const EditMessage = ({ m, setEdit, setMess }) => {
   const { selectedChat } = ChatState();
   const { ourCategories } = useOurCategoriesContext();
   const [inputValue, setInputValue] = useState(m.content);
@@ -16,7 +16,7 @@ const EditInput = ({ m, setEdit, setMess }) => {
   const [mention, setMention] = useState(m.mention);
   const [category, setCategory] = useState(m.category);
   const [loading, setLoading] = useState(false);
-  const {authUser} = useAuthContext();
+  const { authUser } = useAuthContext();
 
   const [subcategories, setSubcategories] = useState([]);
 
@@ -108,6 +108,7 @@ const EditInput = ({ m, setEdit, setMess }) => {
         },
       };
 
+      console.log(mention, category, inputValue);
 
       const { data } = await axios.put(
         `${apiUrl}/api/message/update/${m._id}`,
@@ -133,7 +134,9 @@ const EditInput = ({ m, setEdit, setMess }) => {
       } else {
         console.error("There was an error editing the message!", error);
       }
-    } finally { setEdit(false); }
+    } finally {
+      setEdit(false);
+    }
     setLoading(false);
   };
 
@@ -200,4 +203,4 @@ const EditInput = ({ m, setEdit, setMess }) => {
   );
 };
 
-export default EditInput;
+export default EditMessage;

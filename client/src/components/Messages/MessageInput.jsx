@@ -1,35 +1,52 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { ChatState } from "../../Context/ChatProvider";
+import { ChatState } from "../../Context/ChatContext";
 import { toast } from "react-toastify";
 import { useOurCategoriesContext } from "../../Context/useOurCategories";
-import { apiUrl } from "../../../setupAxios";
+import io from "socket.io-client";
 import { useAuthContext } from "../../Context/AuthContext";
+import { apiUrl } from "../../../setupAxios";
+const ENDPOINT = apiUrl;
+var socket;
 
-const EditInput = ({ m, setEdit, setMess }) => {
+const MessageInput = () => {
   const { selectedChat } = ChatState();
-  const { ourCategories } = useOurCategoriesContext();
-  const [inputValue, setInputValue] = useState(m.content);
+  const { ourCategories, ourIncomes } =
+    useOurCategoriesContext();
+  const {messagesOfMyChat, setMessagesOfMyChat} = ChatState();
+  const { authUser } = useAuthContext();
+
+  const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [trigger, setTrigger] = useState(null);
-  const [mention, setMention] = useState(m.mention);
-  const [category, setCategory] = useState(m.category);
+  const [mention, setMention] = useState(null);
+  const [category, setCategory] = useState(null);
   const [loading, setLoading] = useState(false);
-  const {authUser} = useAuthContext();
-
   const [subcategories, setSubcategories] = useState([]);
 
   const categories = ["chi tiêu", "lập kế hoạch", "thu nhập"];
 
-  // const subcategories = ["quần áo", "sức khỏe", "cafe"];
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", authUser);
+  }, []);
 
   useEffect(() => {
-    if (ourCategories) {
+    socket.on("message recieved", (newMessageRecieved) => {
+      setMessagesOfMyChat([...messagesOfMyChat, newMessageRecieved]);
+    });
+  });
+
+  useEffect(() => {
+    if (mention?.value === "chi tiêu" || mention?.value === "lập kế hoạch") {
       const categoryNames = ourCategories.map((category) => category.name);
       setSubcategories(categoryNames);
+    } else if (mention?.value === "thu nhập") {
+      const incomeNames = ourIncomes.map((income) => income.name);
+      setSubcategories(incomeNames);
     }
-  }, [ourCategories]);
+  }, [mention, ourCategories, ourIncomes]);
 
   useEffect(() => {
     const triggerChar = inputValue.match(/[@/][^@/]*$/);
@@ -108,32 +125,29 @@ const EditInput = ({ m, setEdit, setMess }) => {
         },
       };
 
-
-      const { data } = await axios.put(
-        `${apiUrl}/api/message/update/${m._id}`,
+      const { data } = await axios.post(
+        `${apiUrl}/api/message`,
         {
           mention: mention,
           category: category,
           content: inputValue,
-          //   chatId: myChat?._id,
+          chatId: selectedChat?._id,
+          writedUserEmail: authUser.email,
         },
         config
       );
 
-      //   setMessages([...messages, data]);
-      // console.log(data.mention);
-      setMess(data.message);
-      setEdit(false);
-      // toast.success("Đã sửa tin nhắn");
-    } catch (error) {
-      if (error.response && error.response.status === 403) {
-        toast.error(
-          "Bạn chỉ có thể sửa tin nhắn trong vòng 5 phút kể từ khi gửi"
-        );
-      } else {
-        console.error("There was an error editing the message!", error);
+      socket.emit("new message", data.message);
+
+      setMessagesOfMyChat([...messagesOfMyChat, data.message]);
+      if (data.msg) {
+        toast.warning(data.msg);
       }
-    } finally { setEdit(false); }
+
+      setInputValue("");
+    } catch (error) {
+      toast.error("Đã xảy ra lỗi");
+    }
     setLoading(false);
   };
 
@@ -141,8 +155,6 @@ const EditInput = ({ m, setEdit, setMess }) => {
     <div className="w-full mx-auto border rounded-lg shadow-md bg-white">
       {showSuggestions && (
         <ul
-          //   role="menu"
-          //   data-popover="menu"
           data-popover-placement="top"
           className=" z-10 overflow-auto rounded-md border border-blue-gray-50 bg-white p-3 font-sans text-sm font-normal text-blue-gray-800 shadow-lg shadow-blue-gray-500/10 focus:outline-none"
         >
@@ -200,4 +212,4 @@ const EditInput = ({ m, setEdit, setMess }) => {
   );
 };
 
-export default EditInput;
+export default MessageInput;

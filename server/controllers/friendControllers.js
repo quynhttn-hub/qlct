@@ -109,7 +109,6 @@ const acceptFriendRequest = asyncHandler(async (req, res) => {
 const getFriendRequests = asyncHandler(async (req, res) => {
   const userId = req.params.id;
 
-  console.log(userId);
 
 
   try {
@@ -174,7 +173,6 @@ const unFriend = asyncHandler(async (req, res) => {
 
 const cancelFriendRequest = asyncHandler(async (req, res) => {
   const { userId, friendId } = req.body;
-  console.log(userId, friendId);
   try {
     const user = await User.findById(userId);
     const friend = await User.findById(friendId);

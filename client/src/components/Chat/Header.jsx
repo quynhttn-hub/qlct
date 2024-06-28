@@ -13,7 +13,7 @@ import {
 import { toast } from "react-toastify";
 // import { ChatState } from "../../Context/ChatProvider";
 import "react-toastify/dist/ReactToastify.css";
-import { ChatState } from "../../Context/ChatProvider";
+import { ChatState } from "../../Context/ChatContext";
 import { useAuthContext } from "../../Context/AuthContext";
 import axios from "axios";
 import EditGroup from "../Group/EditGroup";
@@ -26,7 +26,6 @@ const Header = ({ setOpen }) => {
   const [loading, setLoading] = useState(false);
   const [spending, setSpending] = useState({ day: 0, week: 0, month: 0 });
   const [edit, setEdit] = useState(false);
-  // console.log(selectedChat);
 
   useEffect(() => {
     if (selectedChat) {
@@ -122,7 +121,6 @@ const Header = ({ setOpen }) => {
                 />
               </svg>
             </NavLink>
-            {console.log(selectedChat.users[0].avatar)}
             <Avatar
               src={
                 selectedChat.isGroupChat

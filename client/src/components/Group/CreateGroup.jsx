@@ -35,7 +35,7 @@ export function CreateGroup() {
 
   const handleGroup = (userToAdd) => {
     if (selectedUsers.includes(userToAdd)) {
-      toast.error("Người dùng đã được thêm");
+      setErrors({...errors, selectedUsers: "Người dùng đã được thêm"});
       return;
     }
     setSelectedUsers([...selectedUsers, userToAdd]);
@@ -108,11 +108,16 @@ export function CreateGroup() {
         config
       );
 
+      console.log(data);
+      console.log(chats);
+
       setChats([...chats, data]);
       
       toast.success("Tạo nhóm thành công", {
         position: "top-center",
       });
+      setSearchResult([]);
+      setSelectedUsers([]);
       setOpen(false);
     } catch (error) {
       toast.error("Failed to Create the Chat!", {

@@ -76,7 +76,6 @@ const accessChat = asyncHandler(async (req, res) => {
       res.status(200).json(createdChat);
     } catch (error) {
       res.status(400);
-      console.log("khung hả");
       throw new Error(error.message);
     }
   }
@@ -147,7 +146,6 @@ const fetchChat = asyncHandler(async (req, res) => {
 //@route           POST /api/chat/group
 //@access          Protected
 const createGroupChat = asyncHandler(async (req, res) => {
-  console.log(req.body);
 
   var users = JSON.parse(req.body.users);
 

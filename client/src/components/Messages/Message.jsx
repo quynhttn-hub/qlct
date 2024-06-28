@@ -1,11 +1,12 @@
 import React from "react";
 import clsx from "clsx";
-import { Badge, Avatar } from "@material-tailwind/react";
+import { Avatar } from "@material-tailwind/react";
 import { format } from "date-fns";
 import { useAuthContext } from "../../Context/AuthContext";
-import EditInput from "./EditInput";
 import axios from "axios";
+import EditMessage from "./EditMessage";
 import { toast } from "react-toastify";
+import { apiUrl } from "../../../setupAxios";
 
 const Message = ({ m, messages, setMessages }) => {
   const { authUser } = useAuthContext();
@@ -16,8 +17,6 @@ const Message = ({ m, messages, setMessages }) => {
   const [hover, setHover] = React.useState(false);
 
   const [edit, setEdit] = React.useState(false);
-
-  const isMyMessage = authUser._id === m.sender._id;
 
   const messageOwn = clsx(
     "text-sm w-fit overflow-hidden",
@@ -95,8 +94,8 @@ const Message = ({ m, messages, setMessages }) => {
   return (
     <div
       className={container}
-      onMouseEnter={isMyMessage ? () => setHover(true) : undefined}
-      onMouseLeave={isMyMessage ? () => setHover(false) : undefined}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
     >
       <div className={avatar}>
         <Avatar size="sm" src={m.sender.avatar} alt="avatar" />
@@ -104,7 +103,7 @@ const Message = ({ m, messages, setMessages }) => {
 
       {edit ? (
         // <input type="text" value={m.content} />
-        <EditInput m={m} setEdit={setEdit} setMess={setMess} />
+        <EditMessage m={m} setEdit={setEdit} setMess={setMess} />
       ) : (
         <div className={body}>
           <div className="flex items-center gap-1">

@@ -5,17 +5,17 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { apiUrl } from "../../../setupAxios";
 
-
-import { ChatState } from "../../Context/ChatProvider";
+import { ChatState } from "../../Context/ChatContext";
 import { useAuthContext } from "../../Context/AuthContext";
 import { useOurCategoriesContext } from "../../Context/useOurCategories";
 import Message from "./Message";
 
-const MessageBox = () => {
+const Messages = ({ chat }) => {
   const { authUser } = useAuthContext();
   const { selectedChat } = ChatState();
-  const { messages, setMessages } = useOurCategoriesContext();
-
+  const [messages, setMessages] = useState([]);
+  const { messagesOfMyChat, setMessagesOfMyChat } = ChatState();
+  // const { messages, setMessages } = useOurCategoriesContext();
 
   useEffect(() => {
     const getMessages = async () => {
@@ -26,9 +26,12 @@ const MessageBox = () => {
           },
         };
         const { data } = await axios.get(
-          `${apiUrl}/api/message/${selectedChat?._id}`,
+          `${apiUrl}/api/message/${chat?._id}`,
           config
         );
+
+        console.log("data", data);
+        if (chat?._id !== authUser?.myChat._id) setMessagesOfMyChat(data);
 
         setMessages(data);
       } catch (error) {
@@ -38,12 +41,8 @@ const MessageBox = () => {
       }
     };
 
-    if (selectedChat?._id) getMessages();
-  }, [selectedChat?._id, setMessages]);
-
-
-
- 
+    if (chat?._id) getMessages();
+  }, [chat]);
 
   const fetchMessages = async () => {
     if (!selectedChat) return;
@@ -69,26 +68,26 @@ const MessageBox = () => {
       console.log(error);
     }
   };
-   useEffect(() => {
-     if (!selectedChat) return;
-     fetchMessages();
+  useEffect(() => {
+    if (!selectedChat) return;
+    fetchMessages();
 
-     // selectedChatCompare = selectedChat;
-     // eslint-disable-next-line
-   }, [selectedChat]);
+    // selectedChatCompare = selectedChat;
+    // eslint-disable-next-line
+  }, [selectedChat]);
 
   return (
     <>
       {selectedChat ? (
         <ScrollableFeed>
-          {messages &&
-            messages.map((m) => {
+          {messagesOfMyChat &&
+            messagesOfMyChat.map((m) => {
               return (
                 <Message
                   m={m}
                   key={m._id}
-                  messages={messages}
-                  setMessages={setMessages}
+                  messages={messagesOfMyChat}
+                  setMessages={setMessagesOfMyChat}
                 />
               );
             })}
@@ -104,4 +103,4 @@ const MessageBox = () => {
   );
 };
 
-export default MessageBox;
+export default Messages;
