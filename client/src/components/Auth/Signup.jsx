@@ -8,6 +8,7 @@ import {
   Typography,
   Input,
   IconButton,
+  avatar,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import useSignup from "../../hooks/useSignup";

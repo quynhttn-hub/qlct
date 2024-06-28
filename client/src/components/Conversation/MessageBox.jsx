@@ -1,5 +1,4 @@
-import clsx from "clsx";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ScrollableFeed from "react-scrollable-feed";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -15,7 +14,6 @@ const MessageBox = () => {
   const { authUser } = useAuthContext();
   const { selectedChat } = ChatState();
   const { messages, setMessages } = useOurCategoriesContext();
-
 
   useEffect(() => {
     const getMessages = async () => {
@@ -41,10 +39,6 @@ const MessageBox = () => {
     if (selectedChat?._id) getMessages();
   }, [selectedChat?._id, setMessages]);
 
-
-
- 
-
   const fetchMessages = async () => {
     if (!selectedChat) return;
 
@@ -69,13 +63,13 @@ const MessageBox = () => {
       console.log(error);
     }
   };
-   useEffect(() => {
-     if (!selectedChat) return;
-     fetchMessages();
+  useEffect(() => {
+    if (!selectedChat) return;
+    fetchMessages();
 
-     // selectedChatCompare = selectedChat;
-     // eslint-disable-next-line
-   }, [selectedChat]);
+    // selectedChatCompare = selectedChat;
+    // eslint-disable-next-line
+  }, [selectedChat]);
 
   return (
     <>

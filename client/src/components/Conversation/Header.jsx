@@ -122,7 +122,6 @@ const Header = ({ setOpen }) => {
                 />
               </svg>
             </NavLink>
-            {console.log(selectedChat.users[0].avatar)}
             <Avatar
               src={
                 selectedChat.isGroupChat

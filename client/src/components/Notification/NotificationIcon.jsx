@@ -10,13 +10,13 @@ import {
 } from "@material-tailwind/react";
 import { useAuthContext } from "../../Context/AuthContext";
 import axios from "axios";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ChatState } from "../../Context/ChatProvider";
 import io from "socket.io-client";
 import { apiUrl } from "../../../setupAxios";
 
 const ENDPOINT = apiUrl; // "https://talk-a-tive.herokuapp.com"; -> After deployment
-var socket, selectedChatCompare;
+let socket;
 
 function ClockIcon() {
   return (
@@ -41,19 +41,19 @@ export function NotificationIcon() {
   const navigate = useNavigate();
   const { authUser } = useAuthContext();
   const [requests, setRequests] = useState([]);
-  const { notification, setNotification } = ChatState();
-
 
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit("setup", authUser);
-  }, [authUser]);
 
-  useEffect(() => {
-    socket.on("notification recieved", (newNotificationRecieved) => {
-      setRequests([newNotificationRecieved, ...requests]);
+    socket.on("notification received", (newNotificationReceived) => {
+      setRequests((prevRequests) => [newNotificationReceived, ...prevRequests]);
     });
-  }, [socket]);
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [authUser]);
 
   useEffect(() => {
     if (!authUser) return;
@@ -67,7 +67,6 @@ export function NotificationIcon() {
         .get(`${apiUrl}/api/friend/getrequest/${authUser._id}`, config)
         .then((response) => {
           setRequests(response.data);
-          setNotification([...response.data, ...notification]);
         })
         .catch((error) => {
           console.log(error);
@@ -77,13 +76,11 @@ export function NotificationIcon() {
   }, [authUser]);
 
   const handleClickNoti = (request) => {
-    //delete request
-
-    setRequests(requests.filter((r) => r._id !== request._id));
+    // Xóa thông báo khi đã đọc
+    setRequests(requests.filter((r) => (r._id || r.id )!== (request._id || request.id)));
     navigate("/chats");
-    // console.log("hi em");
-    // navigate("/notifications");
   };
+
   return (
     <Menu>
       <MenuHandler>
@@ -105,10 +102,7 @@ export function NotificationIcon() {
           </div>
         </IconButton>
       </MenuHandler>
-      <MenuList
-        className="flex flex-col gap-2"
-        
-      >
+      <MenuList className="flex flex-col gap-2">
         {requests && requests.length > 0 ? (
           requests.map((request) => (
             <MenuItem
@@ -126,10 +120,10 @@ export function NotificationIcon() {
                   <span className="font-semibold">{request.username} </span>
                   <span className="">đã gửi lời mời kết bạn.</span>
                 </div>
-                <Typography className="flex items-center gap-1 text-sm font-medium text-blue-gray-500">
+                {/* <Typography className="flex items-center gap-1 text-sm font-medium text-blue-gray-500">
                   <ClockIcon />
                   13 minutes ago
-                </Typography>
+                </Typography> */}
               </div>
             </MenuItem>
           ))

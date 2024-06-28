@@ -20,7 +20,7 @@ import { apiUrl } from "../../setupAxios";
 var socket;
 const ENDPOINT = apiUrl;
 
-function Sidebar() {
+function Sidebar({ fetchAgain }) {
   const { authUser } = useAuthContext();
   const [searchResult, setSearchResult] = useState([]);
   const { setSelectedChat, chats, setChats } = ChatState();
@@ -39,7 +39,10 @@ function Sidebar() {
         },
       };
 
-      const { data } = await axios.get(`${apiUrl}/api/chat/${authUser._id}`, config);
+      const { data } = await axios.get(
+        `${apiUrl}/api/chat/${authUser._id}`,
+        config
+      );
       setChats(data);
     } catch (error) {
       toast.error(error.message);
@@ -47,10 +50,9 @@ function Sidebar() {
   };
 
   useEffect(() => {
-    if (authUser) {
-      fetchChats();
-    }
-  }, [authUser]);
+    fetchChats();
+    // eslint-disable-next-line
+  }, [fetchAgain]);
 
   const handleSearch = async (query) => {
     setSearch(query);

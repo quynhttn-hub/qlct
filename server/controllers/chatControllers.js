@@ -68,19 +68,17 @@ const accessChat = asyncHandler(async (req, res) => {
 
     try {
       const createdChat = await Chat.create(chatData);
-      // const FullChat = await Chat.findOne({ _id: createdChat._id }).populate(
-      //   "users",
-      //   "chatName",
-      //   "-password"
-      // );
-      res.status(200).json(createdChat);
+      const FullChat = await Chat.findOne({ _id: createdChat._id }).populate(
+        "users",
+        "username avatar email"
+      );
+      res.status(200).json(FullChat);
     } catch (error) {
       res.status(400);
       throw new Error(error.message);
     }
   }
 });
-
 
 const editChat = asyncHandler(async (req, res) => {
   const { chatId, newName } = req.body;
@@ -109,7 +107,6 @@ const editChat = asyncHandler(async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
-
 
 //@description     Fetch all chats for a user
 //@route           GET /api/chat/
@@ -146,9 +143,7 @@ const fetchChat = asyncHandler(async (req, res) => {
 //@route           POST /api/chat/group
 //@access          Protected
 const createGroupChat = asyncHandler(async (req, res) => {
-
   var users = JSON.parse(req.body.users);
-
 
   try {
     const groupChat = await Chat.create({
@@ -317,7 +312,6 @@ const mySelfChat = asyncHandler(async (req, res) => {
 
 const getSpending = asyncHandler(async (req, res) => {
   const chatId = req.params.id;
-
 
   const chat = await Chat.findById(chatId);
   if (!chat) {

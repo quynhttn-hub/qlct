@@ -48,7 +48,6 @@ const RequestList = () => {
         config
       )
       .then((response) => {
-        console.log(response.data);
         setFriends(response.data.friends);
       })
       .catch((error) => {
@@ -74,7 +73,6 @@ const RequestList = () => {
         config
       )
       .then((response) => {
-        console.log(response.data);
         setRequests(requests.filter((request) => request.id !== requestId));
         // setFriends(response.data.friends);
       })

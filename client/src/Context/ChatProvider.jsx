@@ -12,7 +12,6 @@ const ChatProvider = ({ children }) => {
   const [myChat, setMyChat] = useState(null);
   const { authUser } = useAuthContext();
 
-  console.log(authUser);
 
 
   return (

@@ -5,6 +5,7 @@ const generateToken = require("../config/generateTokenOld");
 const Chat = require("../models/chatModel");
 
 const signup = async (req, res) => {
+
   try {
     const { username, email, password, confirmPassword, avatar } = req.body;
 
@@ -24,6 +25,7 @@ const signup = async (req, res) => {
       username,
       email,
       password,
+      avatar,
     });
 
     if (newUser) {

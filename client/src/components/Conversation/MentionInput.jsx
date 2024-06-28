@@ -9,7 +9,7 @@ import { apiUrl } from "../../../setupAxios";
 const ENDPOINT = apiUrl;
 var socket;
 
-const MentionInput = () => {
+const MentionInput = ({ setFetchAgain }) => {
   const { selectedChat } = ChatState();
   const { messages, setMessages, ourCategories, ourIncomes } =
     useOurCategoriesContext();
@@ -34,6 +34,7 @@ const MentionInput = () => {
   useEffect(() => {
     socket.on("message recieved", (newMessageRecieved) => {
       setMessages([...messages, newMessageRecieved]);
+      setFetchAgain(cur => !cur);
     });
   });
 
@@ -136,7 +137,6 @@ const MentionInput = () => {
         config
       );
 
-      console.log(data.message);
 
       socket.emit("new message", data.message);
 
@@ -147,7 +147,7 @@ const MentionInput = () => {
 
       setInputValue("");
     } catch (error) {
-        toast.error("Đã xảy ra lỗi");
+      toast.error("Đã xảy ra lỗi");
     }
     setLoading(false);
   };
