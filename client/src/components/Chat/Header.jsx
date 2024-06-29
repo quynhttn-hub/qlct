@@ -30,12 +30,13 @@ const Header = ({ setOpen }) => {
     if (selectedChat) {
       setFileLink(selectedChat?.sheetLink);
     }
+  }, [selectedChat]);
 
+  useEffect(() => {
     if (selectedChat.isGroupChat && selectedChat?.groupAdmin?._id == authUser._id) {
       setEdit(true);
     }
-
-  }, [selectedChat]);
+  }, [selectedChat, authUser]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -96,7 +97,7 @@ const Header = ({ setOpen }) => {
 
   return (
     <>
-        {selectedChat && authUser && (
+      {selectedChat && authUser && (
         <div className="bg-white w-full flex border-b-[1px] sm:px-4 py-3 px-4 lg:px-6 justify-between items-center shadow-sm">
           <div className="flex gap-3 items-center">
             <NavLink
@@ -142,10 +143,7 @@ const Header = ({ setOpen }) => {
               </Typography>
             </div>
 
-
-              {edit && (
-              <EditGroup />
-            )}
+            {edit && <EditGroup />}
 
             {fileLink ? (
               <Link
@@ -199,7 +197,7 @@ const Header = ({ setOpen }) => {
               Tổng chi tiêu:
             </Typography>
             <div className="flex gap-4">
-                <Popover>
+              <Popover>
                 <PopoverHandler>
                   <button className="hover:text-blue-500">Ngày</button>
                 </PopoverHandler>
@@ -216,9 +214,9 @@ const Header = ({ setOpen }) => {
                     </span>
                   </div>
                 </PopoverContent>
-              </Popover>  
+              </Popover>
 
-                <Popover>
+              <Popover>
                 <PopoverHandler>
                   <button className="hover:text-blue-500">Tuần</button>
                 </PopoverHandler>
@@ -235,9 +233,9 @@ const Header = ({ setOpen }) => {
                     </span>
                   </div>
                 </PopoverContent>
-              </Popover>  
+              </Popover>
 
-                <Popover>
+              <Popover>
                 <PopoverHandler>
                   <button className="hover:text-blue-500">Tháng</button>
                 </PopoverHandler>
@@ -254,10 +252,10 @@ const Header = ({ setOpen }) => {
                     </span>
                   </div>
                 </PopoverContent>
-              </Popover>  
-              </div>  
-            </div>  
-            <div
+              </Popover>
+            </div>
+          </div>
+          <div
             onClick={() => setOpen((cur) => !cur)}
             className="text-blue-500 cursor-pointer hover:text-blue-gray-700 transition"
           >
@@ -275,9 +273,9 @@ const Header = ({ setOpen }) => {
                 d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
               />
             </svg>
-          </div>  
-          </div>  
-        )}   
+          </div>
+        </div>
+      )}
     </>
   );
 };

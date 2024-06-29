@@ -11,7 +11,6 @@ import {
   PopoverContent,
 } from "@material-tailwind/react";
 import { toast } from "react-toastify";
-// import { ChatState } from "../../Context/ChatProvider";
 import "react-toastify/dist/ReactToastify.css";
 import { ChatState } from "../../Context/ChatProvider";
 import { useAuthContext } from "../../Context/AuthContext";
@@ -36,6 +35,10 @@ const Header = ({ setOpen }) => {
     if (selectedChat?.groupAdmin?._id == authUser._id) {
       setEdit(true);
     }
+    else {
+      setEdit(false);
+    }
+    // setEdit(false);
 
   }, [selectedChat]);
 

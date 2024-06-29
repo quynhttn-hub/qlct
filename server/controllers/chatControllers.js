@@ -32,7 +32,7 @@ const getChat = asyncHandler(async (req, res) => {
 //@description     Create or fetch One to One Chat
 //@route           POST /api/chat/
 //@access          Protected
-const accessChat = asyncHandler(async (req, res) => {
+const createChatOneToOne = asyncHandler(async (req, res) => {
   const { myId, userId } = req.body;
 
   if (!userId) {
@@ -111,7 +111,7 @@ const editChat = asyncHandler(async (req, res) => {
 //@description     Fetch all chats for a user
 //@route           GET /api/chat/
 //@access          Protected
-const fetchChats = asyncHandler(async (req, res) => {
+const getChats = asyncHandler(async (req, res) => {
   try {
     Chat.find({ users: { $elemMatch: { $eq: req.params.id } } })
       .populate("users", "-password")
@@ -165,7 +165,7 @@ const createGroupChat = asyncHandler(async (req, res) => {
   }
 });
 
-const createSheet = asyncHandler(async (req, res) => {
+const createSheetForChat = asyncHandler(async (req, res) => {
   const { chatId } = req.body;
 
   try {
@@ -327,13 +327,13 @@ const getSpending = asyncHandler(async (req, res) => {
   }
 });
 module.exports = {
-  accessChat,
-  fetchChats,
+  createChatOneToOne,
+  getChats,
   createGroupChat,
   renameGroup,
   addToGroup,
   removeFromGroup,
-  createSheet,
+  createSheetForChat,
   mySelfChat,
   fetchChat,
   getSpending,

@@ -31,7 +31,7 @@ function Sidebar({ fetchAgain }) {
     socket.emit("setup", authUser);
   }, [authUser]);
 
-  const fetchChats = async () => {
+  const getChats = async () => {
     try {
       const config = {
         headers: {
@@ -50,7 +50,7 @@ function Sidebar({ fetchAgain }) {
   };
 
   useEffect(() => {
-    fetchChats();
+    getChats();
     // eslint-disable-next-line
   }, [fetchAgain]);
 
