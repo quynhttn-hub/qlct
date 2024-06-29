@@ -1,0 +1,6 @@
+Bước 1: Cài đặt và cấu hình các môi trường cần thiết (Git, Nodejs, MongoDB,
+NPM, Reactjs).
+Bước 2: Thực hiện chạy lệnh “npm install” trên hai thư mục client và server của
+project để cài đặt các thư viện cần thiết cho việc chạy ứng dụng.
+Bước 3: Cấu hình môi trường trong các file .env cho cả client và server.
+Bước 4: Chạy “npm run server” ở server và “npm run dev” ở client để khởi chạy.
