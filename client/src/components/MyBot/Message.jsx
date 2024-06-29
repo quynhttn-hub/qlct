@@ -1,6 +1,6 @@
 import React from "react";
 import clsx from "clsx";
-import { Badge, Avatar } from "@material-tailwind/react";
+import {  Avatar } from "@material-tailwind/react";
 import { format } from "date-fns";
 import { useAuthContext } from "../../Context/AuthContext";
 import EditInput from "./EditInput";

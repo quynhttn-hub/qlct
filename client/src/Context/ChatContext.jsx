@@ -1,7 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { useAuthContext } from "./AuthContext";
-import axios from "axios";
-import { apiUrl } from "../../setupAxios";
+import { createContext, useContext, useState } from "react";
 
 const ChatContext = createContext();
 

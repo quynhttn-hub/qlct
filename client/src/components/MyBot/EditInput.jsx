@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { ChatState } from "../../Context/ChatProvider";
 import { useCategoryContext } from "../../Context/MyCategoryContext";
@@ -9,7 +9,6 @@ import { useAuthContext } from "../../Context/AuthContext";
 
 const EditInput = ({ m, setEdit, setMess }) => {
   const { myChat } = ChatState();
-  const { messages, setMessages } = useConversation();
 
   const {authUser} = useAuthContext();
 

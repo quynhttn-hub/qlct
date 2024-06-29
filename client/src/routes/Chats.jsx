@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Conversation from "../components/Conversation/Conversation";
 import Friends from "../components/Friends/index";
 import Sidebar from "../layouts/Sidebar";

@@ -1,6 +1,6 @@
 import { Sidebar } from "../components/MyBot/Sidebar";
 import MessageBox from "../components/MyBot/MessageBox";
-import MentionInput from "../components/MyBot/test";
+import MentionInput from "../components/MyBot/MessageInput";
 import { MyCategoryProvider } from "../Context/MyCategoryContext";
 import Header from "../components/MyBot/Header";
 import { useAuthContext } from "../Context/AuthContext";

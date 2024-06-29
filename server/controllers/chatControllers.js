@@ -134,10 +134,7 @@ const getChats = asyncHandler(async (req, res) => {
   }
 });
 
-const fetchChat = asyncHandler(async (req, res) => {
-  // console.log(req.params.id);
-  // console.log("czcxz");
-});
+
 
 //@description     Create New Group Chat
 //@route           POST /api/chat/group
@@ -204,87 +201,7 @@ const createSheetForChat = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Rename Group
-// @route   PUT /api/chat/rename
-// @access  Protected
-const renameGroup = asyncHandler(async (req, res) => {
-  const { chatId, chatName } = req.body;
 
-  const updatedChat = await Chat.findByIdAndUpdate(
-    chatId,
-    {
-      chatName: chatName,
-    },
-    {
-      new: true,
-    }
-  )
-    .populate("users", "-password")
-    .populate("groupAdmin", "-password");
-
-  if (!updatedChat) {
-    res.status(404);
-    throw new Error("Chat Not Found");
-  } else {
-    res.json(updatedChat);
-  }
-});
-
-// @desc    Remove user from Group
-// @route   PUT /api/chat/groupremove
-// @access  Protected
-const removeFromGroup = asyncHandler(async (req, res) => {
-  const { chatId, userId } = req.body;
-
-  // check if the requester is admin
-
-  const removed = await Chat.findByIdAndUpdate(
-    chatId,
-    {
-      $pull: { users: userId },
-    },
-    {
-      new: true,
-    }
-  )
-    .populate("users", "-password")
-    .populate("groupAdmin", "-password");
-
-  if (!removed) {
-    res.status(404);
-    throw new Error("Chat Not Found");
-  } else {
-    res.json(removed);
-  }
-});
-
-// @desc    Add user to Group / Leave
-// @route   PUT /api/chat/groupadd
-// @access  Protected
-const addToGroup = asyncHandler(async (req, res) => {
-  const { chatId, userId } = req.body;
-
-  // check if the requester is admin
-
-  const added = await Chat.findByIdAndUpdate(
-    chatId,
-    {
-      $push: { users: userId },
-    },
-    {
-      new: true,
-    }
-  )
-    .populate("users", "-password")
-    .populate("groupAdmin", "-password");
-
-  if (!added) {
-    res.status(404);
-    throw new Error("Chat Not Found");
-  } else {
-    res.json(added);
-  }
-});
 
 // @desc    check xem chat với bản thân có chưa, có rồi thì trả về, chưa thì tạo mới chat users chỉ có bản thân mình
 // @route   get /api/chat/myself
@@ -330,12 +247,8 @@ module.exports = {
   createChatOneToOne,
   getChats,
   createGroupChat,
-  renameGroup,
-  addToGroup,
-  removeFromGroup,
   createSheetForChat,
   mySelfChat,
-  fetchChat,
   getSpending,
   getChat,
   editChat,

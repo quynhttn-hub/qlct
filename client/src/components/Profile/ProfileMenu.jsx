@@ -15,7 +15,6 @@ import {
 } from "@heroicons/react/24/solid";
 import { useAuthContext } from "../../Context/AuthContext";
 import useLogout from "../../hooks/useLogout";
-import ProfileDialog from "./ProfileDialog";
 const profileMenuItems = [
   {
     label: "Trang cá nhân",

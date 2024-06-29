@@ -1,8 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const Message = require("../models/messageModel");
-const User = require("../models/userModel");
 const Chat = require("../models/chatModel");
-const Mention = require("../models/mentionModel");
 const Category = require("../models/categoryModel");
 const Income = require("../models/incomeModel");
 
@@ -46,24 +43,6 @@ const deleteIncome = asyncHandler(async (req, res) => {
   }
 });
 
-const updateCategory = asyncHandler(async (req, res) => {
-  const { id, name } = req.body;
-  try {
-    const updatedCategory = await Category.findByIdAndUpdate(
-      id,
-      {
-        name,
-      },
-      {
-        new: true,
-      }
-    );
-    res.send(updatedCategory);
-  } catch (error) {
-    res.status(400);
-    throw new Error(error.message);
-  }
-});
 
 const getAllIncome = asyncHandler(async (req, res) => {
   const chatId = req.params.id;
@@ -79,7 +58,6 @@ const getAllIncome = asyncHandler(async (req, res) => {
 
 module.exports = {
   deleteIncome,
-  updateCategory,
   getAllIncome,
   createIncome,
 };

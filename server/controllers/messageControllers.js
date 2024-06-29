@@ -7,7 +7,6 @@ const {
   writeGGSheet,
   readRemaining,
 } = require("../googleSheet/googleSheetHandler");
-const Mention = require("../models/mentionModel");
 
 //@description     Get all Messages
 //@route           GET /api/Message/:chatId
@@ -147,7 +146,7 @@ const sendMessage = asyncHandler(async (req, res) => {
           .catch((error) => {
             console.log(error);
           });
-      }, 300000); // 5 phút = 300000 milliseconds
+      }, 100000); // 5 phút = 300000 milliseconds
 
       // }
     }

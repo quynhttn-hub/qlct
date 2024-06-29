@@ -1,7 +1,5 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { useAuthContext } from "../Context/AuthContext";
-import axios from "axios";
-import { apiUrl } from "../../setupAxios";
 
 const ChatContext = createContext();
 
@@ -10,7 +8,6 @@ const ChatProvider = ({ children }) => {
   const [notification, setNotification] = useState([]);
   const [chats, setChats] = useState([]);
   const [myChat, setMyChat] = useState(null);
-  const { authUser } = useAuthContext();
 
 
 

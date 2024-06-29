@@ -1,8 +1,6 @@
 import { create } from "zustand";
 
 const useConversation = create((set) => ({
-  file: null,
-  setFile: (file) => set({ file }),
   selectedConversation: null,
   setSelectedConversation: (selectedConversation) =>
     set({ selectedConversation }),

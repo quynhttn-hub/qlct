@@ -2,7 +2,6 @@ const asyncHandler = require("express-async-handler");
 const Message = require("../models/messageModel");
 const User = require("../models/userModel");
 const Chat = require("../models/chatModel");
-const Mention = require("../models/mentionModel");
 const Category = require("../models/categoryModel");
 
 const createCategory = asyncHandler(async (req, res) => {
@@ -48,24 +47,6 @@ const deleteCategory = asyncHandler(async (req, res) => {
   }
 });
 
-const updateCategory = asyncHandler(async (req, res) => {
-  const { id, name } = req.body;
-  try {
-    const updatedCategory = await Category.findByIdAndUpdate(
-      id,
-      {
-        name,
-      },
-      {
-        new: true,
-      }
-    );
-    res.send(updatedCategory);
-  } catch (error) {
-    res.status(400);
-    throw new Error(error.message);
-  }
-});
 
 const getAllCategory = asyncHandler(async (req, res) => {
   const chatId = req.params.id;
@@ -82,6 +63,5 @@ const getAllCategory = asyncHandler(async (req, res) => {
 module.exports = {
   createCategory,
   deleteCategory,
-  updateCategory,
   getAllCategory,
 };

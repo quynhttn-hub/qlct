@@ -1,5 +1,5 @@
 // src/components/MentionInput.js
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import axios from "axios";
 import { ChatState } from "../../Context/ChatProvider";
 import { useCategoryContext } from "../../Context/MyCategoryContext";

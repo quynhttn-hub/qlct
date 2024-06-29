@@ -1,5 +1,3 @@
-const bcrypt = require("bcrypt");
-const generateTokenAndSetCookie = require("../config/generateToken");
 const User = require("../models/userModel");
 const generateToken = require("../config/generateTokenOld");
 const Chat = require("../models/chatModel");

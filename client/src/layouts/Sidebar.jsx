@@ -4,7 +4,6 @@ import {
   ListItem,
   ListItemPrefix,
   Input,
-  Badge,
   Avatar,
 } from "@material-tailwind/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
