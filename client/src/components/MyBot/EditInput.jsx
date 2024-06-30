@@ -112,7 +112,6 @@ const EditInput = ({ m, setEdit, setMess }) => {
         },
       };
 
-      console.log(mention, category, inputValue);
 
       const { data } = await axios.put(
         `${apiUrl}/api/message/update/${m._id}`,

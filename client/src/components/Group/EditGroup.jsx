@@ -39,7 +39,6 @@ const EditGroup = () => {
   const handleOpen = () => setOpen(!open);
 
   const handleGroup = (userToAdd) => {
-    console.log(selectedUsers, userToAdd);
     if (
       selectedUsers.find((u) => u._id === userToAdd.id || u.id === userToAdd.id)
     ) {
@@ -81,7 +80,6 @@ const EditGroup = () => {
   };
 
   const handleSubmit = async () => {
-    console.log(selectedUsers, groupChatName);
     let hasError = false;
     let tempErrors = { groupChatName: "", selectedUsers: "" };
 

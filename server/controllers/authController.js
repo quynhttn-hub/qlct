@@ -17,14 +17,26 @@ const signup = async (req, res) => {
       return res.status(400).json({ error: "Username already exists" });
     }
 
+    let data 
+    if (avatar) {
+      data = {
+        username,
+        email,
+        password,
+        avatar
+      };
+    }
+    else {
+      data = {
+        username,
+        email,
+        password,
+      };
+    }
 
 
-    const newUser = new User({
-      username,
-      email,
-      password,
-      avatar,
-    });
+
+    const newUser = new User(data);
 
     if (newUser) {
       await newUser.save();
@@ -45,6 +57,7 @@ const signup = async (req, res) => {
       } else {
         newChat = chat[0];
       }
+
 
 
       res.status(201).json({
