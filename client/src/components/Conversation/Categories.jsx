@@ -168,7 +168,7 @@ export const Categories = () => {
         <Accordion>
           {ourCategories.map((category) => (
             <div
-              key={category._id}
+              key={category._id || category.id}
               className="flex flex-row items-center h-10  px-3 rounded-lg"
             >
               <div className="flex-grow">{category.name}</div>
@@ -235,7 +235,7 @@ export const Categories = () => {
         <Accordion>
           {ourIncomes.map((income) => (
             <div
-              key={income._id}
+              key={income._id || income.id}
               className="flex flex-row items-center h-10  px-3 rounded-lg"
             >
               <div className="flex-grow">{income.name}</div>

@@ -1,4 +1,4 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { ChatState } from "../../Context/ChatProvider";
 import { toast } from "react-toastify";
@@ -32,9 +32,9 @@ const MentionInput = ({ setFetchAgain }) => {
   }, []);
 
   useEffect(() => {
-    socket.on("message recieved", (newMessageRecieved) => {
-      setMessages([...messages, newMessageRecieved]);
-      setFetchAgain(cur => !cur);
+    socket.on("message received", (newMessageReceived) => {
+      setMessages([...messages, newMessageReceived]);
+      setFetchAgain((cur) => !cur);
     });
   });
 
@@ -86,6 +86,15 @@ const MentionInput = ({ setFetchAgain }) => {
     }
   }, [selectedChat]);
 
+  useEffect(() => {
+    if (!inputValue.includes(mention?.value)) {
+      setMention(null);
+    }
+    if (!inputValue.includes(category?.value)) {
+      setCategory(null);
+    }
+  }, [inputValue, mention, category]);
+
   const handleChange = (event) => {
     setInputValue(event.target.value);
   };
@@ -136,7 +145,6 @@ const MentionInput = ({ setFetchAgain }) => {
         },
         config
       );
-
 
       socket.emit("new message", data.message);
 

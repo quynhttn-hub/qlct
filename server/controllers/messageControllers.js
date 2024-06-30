@@ -90,6 +90,14 @@ const sendMessage = asyncHandler(async (req, res) => {
           const remainingData = contentAfter5Min
             .replace(sliceRemainingData, "")
             .trim();
+          
+          if (
+            !remainingData ||
+            !mentionAfter5Min.value ||
+            !categoryAfter5Min.value
+          ) {
+            return;
+          }
           await writeGGSheet(
             mentionAfter5Min.value,
             categoryAfter5Min.value,
@@ -137,7 +145,7 @@ const sendMessage = asyncHandler(async (req, res) => {
             if (mention.value == "chi tiêu" && remaining - money < 0) {
               res.status(200).json({
                 message,
-                msg: "Không đủ tiền để chi tiêu",
+                msg: "Bạn đã chi tiêu vượt quá giới hạn",
               });
             } else {
               res.status(200).json({

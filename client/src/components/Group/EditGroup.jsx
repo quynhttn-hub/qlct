@@ -224,7 +224,7 @@ const EditGroup = () => {
             <div className="flex flex-row gap-1">
               {selectedUsers.map((u) => (
                 <UserBadgeItem
-                  key={u.id}
+                  key={u.id || u._id}
                   user={u}
                   handleFunction={() => handleDelete(u)}
                 />
@@ -238,7 +238,7 @@ const EditGroup = () => {
                 ?.slice(0, 4)
                 .map((user) => (
                   <UserListItem
-                    key={user.id}
+                    key={user.id || user._id}
                     user={user}
                     handleFunction={() => handleGroup(user)}
                   />

@@ -252,7 +252,7 @@ export function Sidebar() {
           <Accordion>
             {myCategory.map((category) => (
               <div
-                key={category._id}
+                key={category._id || category.id}
                 className="flex flex-row items-center h-10 px-3 rounded-lg"
               >
                 <ListItemPrefix>
@@ -319,7 +319,7 @@ export function Sidebar() {
           <Accordion>
             {myIncome.map((income) => (
               <div
-                key={income._id}
+                key={income._id || income.id}
                 className="flex flex-row items-center h-10 px-3 rounded-lg"
               >
                 <ListItemPrefix>

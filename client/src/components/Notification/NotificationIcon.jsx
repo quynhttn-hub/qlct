@@ -107,7 +107,7 @@ export function NotificationIcon() {
           requests.map((request) => (
             <MenuItem
               className="flex items-center gap-4 py-2 pl-2 pr-8"
-              key={request._id}
+              key={request._id || request.id}
               onClick={() => handleClickNoti(request)}
             >
               <Avatar

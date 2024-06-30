@@ -240,12 +240,14 @@ const writeGGSheet = async (
       });
   } else if (mention == "thu nhập") {
     sheet = file.sheetsByIndex[3];
+    console.log(timeDayMonthYear, category, money, note, writedUserEmail);
     await sheet
       .addRow({
         "Thời gian": timeDayMonthYear,
         "Loại thu nhập": category,
         "Số tiền": money,
         "Ghi chú": note,
+        "Người ghi": writedUserEmail,
       })
       .then(() => {})
       .catch((error) => {

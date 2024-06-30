@@ -181,7 +181,7 @@ export function CreateGroup() {
               label="thành viên"
               size="lg"
               onChange={(e) => handleSearch(e.target.value)}
-              error={!!errors.selectedUsers}
+              error={errors.selectedUsers}
             />
             {errors.selectedUsers && (
               <Typography color="red" variant="small">

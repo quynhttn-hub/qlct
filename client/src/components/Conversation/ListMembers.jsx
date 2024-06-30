@@ -55,7 +55,7 @@ const ListMembers = ({ members }) => {
           <AccordionBody className="py-1">
             <List className="p-0">
               {members.map((member) => (
-                <ListItem key={member._id}>
+                <ListItem key={member._id || member.id}>
                   <Avatar src={member.avatar} alt="avatar" size="sm" className="mr-2"/>
                   {member.username}
                 </ListItem>
