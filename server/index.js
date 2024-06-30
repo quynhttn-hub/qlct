@@ -41,7 +41,6 @@ app.use("/api/category", categoryRoutes);
 app.use("/api/friend", friendRoutes);
 app.use("/api/income", incomeRoutes);
 
-
 // Error Handling middlewares
 app.use(notFound);
 app.use(errorHandler);
@@ -83,35 +82,29 @@ io.on("connection", (socket) => {
     queue.push(newMessageRecieved);
 
     while (queue.length > 0) {
-       var message = queue.shift();
-       var chat = message.chat;
+      var message = queue.shift();
+      var chat = message.chat;
 
       if (!chat.users) return console.log("chat.users not defined");
       chat.users.forEach((user) => {
-        const userId = user._id || user.id;
-        const senderId = message.sender._id || message.sender.id;
-         if (userId === senderId ) return;
-
-         socket.in(userId).emit("message recieved", message);
-       });
+        const userId = user._id;
+        const senderId = message.sender._id;
+        if (userId === senderId) return;
+        socket.in(userId).emit("message recieved", message);
+      });
     }
-    
-   
   });
 
   socket.on("new notification", (notification) => {
     var senderId = notification.sendId;
+    console.log(senderId, notification);
 
-    socket
-      .in(senderId)
-      .emit("notification received", {
-        avatar: notification.avatar,
-        username: notification.username,
-        id: notification.id,
-      });
+    socket.in(senderId).emit("notification received", {
+      avatar: notification.avatar,
+      username: notification.username,
+      id: notification.id,
+    });
   });
-
-
 
   socket.on("disconnect", (userData) => {
     // console.log("USER DISCONNECTED");

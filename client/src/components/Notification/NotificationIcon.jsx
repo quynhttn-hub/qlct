@@ -53,7 +53,7 @@ export function NotificationIcon() {
     return () => {
       socket.disconnect();
     };
-  }, [authUser]);
+  });
 
   useEffect(() => {
     if (!authUser) return;

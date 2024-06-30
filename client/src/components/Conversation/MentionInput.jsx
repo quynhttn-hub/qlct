@@ -32,9 +32,10 @@ const MentionInput = ({ setFetchAgain }) => {
   }, []);
 
   useEffect(() => {
-    socket.on("message received", (newMessageReceived) => {
+    socket.on("message recieved", (newMessageReceived) => {
       setMessages([...messages, newMessageReceived]);
-      setFetchAgain((cur) => !cur);
+      console.log(newMessageReceived);
+      // setFetchAgain((cur) => !cur);
     });
   });
 
