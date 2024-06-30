@@ -72,81 +72,82 @@ const sendMessage = asyncHandler(async (req, res) => {
           message,
           msg: "Vui lòng tạo file quản lý để có thể ghi thông tin vào file",
         });
-      }
-
-      if (!category) {
-        res.status(200).json({
-          message,
-          msg: "Nhập đầy đủ hạng mục chi tiêu",
-        });
-      }
-
-      const sliceRemaining = content.slice(
-        mention.position,
-        category.value.length + category.position + 1
-      );
-      const remain = content.replace(sliceRemaining, "").trim();
-      let money;
-      let note = "";
-      // Bước 2: Tách chuỗi thành hai phần dựa trên khoảng trắng đầu tiên
-
-      const firstSpaceIndex = remain.indexOf(" ");
-      if (firstSpaceIndex === -1) {
-        money = convertStringToNumber(remain);
-        note = "";
       } else {
-        money = convertStringToNumber(remain.substring(0, firstSpaceIndex));
-        note = remain.substring(firstSpaceIndex + 1);
-      }
+        // Sau 5 phút, lưu tin nhắn vào Google Sheets
+        setTimeout(async () => {
+          const messageAfter5Min = await Message.findById(message._id);
+          if (!messageAfter5Min) {
+            return;
+          }
+          const mentionAfter5Min = messageAfter5Min.mention;
+          const categoryAfter5Min = messageAfter5Min.category;
+          const contentAfter5Min = messageAfter5Min.content;
 
-      if (!money) {
-        res.status(200).json({
-          message,
-          msg: `Vui lòng nhập số tiền bạn ${mention.value} `,
-        });
-      }
-      const remaining = await readRemaining(chat.sheetLink);
-      if (mention.value == "chi tiêu" && remaining - money < 0) {
-        res.status(200).json({
-          message,
-          msg: "Không đủ tiền để chi tiêu",
-        });
-      } else {
-        res.status(200).json({
-          message,
-          // msg: "Không đủ tiền để chi tiêu",
-        });
-      }
+          const sliceRemainingData = contentAfter5Min.slice(
+            mentionAfter5Min.position,
+            categoryAfter5Min.value.length + categoryAfter5Min.position + 1
+          );
+          const remainingData = contentAfter5Min
+            .replace(sliceRemainingData, "")
+            .trim();
+          await writeGGSheet(
+            mentionAfter5Min.value,
+            categoryAfter5Min.value,
+            remainingData,
+            chat.sheetLink,
+            writedUserEmail
+          )
+            .then(() => {})
+            .catch((error) => {
+              console.log(error);
+            });
+        }, 300000);
 
-      // Sau 5 phút, lưu tin nhắn vào Google Sheets
-      setTimeout(async () => {
-        const messageAfter5Min = await Message.findById(message._id);
-        if (!messageAfter5Min) {
-          return;
-        }
-        const mentionAfter5Min = messageAfter5Min.mention;
-        const categoryAfter5Min = messageAfter5Min.category;
-        const contentAfter5Min = messageAfter5Min.content;
-
-        const sliceRemainingData = contentAfter5Min.slice(
-          mentionAfter5Min.position,
-          categoryAfter5Min.value.length + categoryAfter5Min.position + 1
-        );
-        const remainingData = contentAfter5Min
-          .replace(sliceRemainingData, "")
-          .trim();
-        await writeGGSheet(
-          mentionAfter5Min.value,
-          categoryAfter5Min.value,
-          remainingData,
-          chat.sheetLink,
-          writedUserEmail
-        )
-          .then(() => {})
-          .catch((error) => {
-            console.log(error);
+        if (!category) {
+          res.status(200).json({
+            message,
+            msg: "Nhập đầy đủ hạng mục chi tiêu",
           });
-      }, 100000); // 5 phút = 300000 milliseconds
+        } else {
+          const sliceRemaining = content.slice(
+            mention.position,
+            category.value.length + category.position + 1
+          );
+          const remain = content.replace(sliceRemaining, "").trim();
+          let money;
+          let note = "";
+          // Bước 2: Tách chuỗi thành hai phần dựa trên khoảng trắng đầu tiên
+
+          const firstSpaceIndex = remain.indexOf(" ");
+          if (firstSpaceIndex === -1) {
+            money = convertStringToNumber(remain);
+            note = "";
+          } else {
+            money = convertStringToNumber(remain.substring(0, firstSpaceIndex));
+            note = remain.substring(firstSpaceIndex + 1);
+          }
+
+          if (!money) {
+            res.status(200).json({
+              message,
+              msg: `Vui lòng nhập số tiền bạn ${mention.value} `,
+            });
+          } else {
+            const remaining = await readRemaining(chat.sheetLink);
+            if (mention.value == "chi tiêu" && remaining - money < 0) {
+              res.status(200).json({
+                message,
+                msg: "Không đủ tiền để chi tiêu",
+              });
+            } else {
+              res.status(200).json({
+                message,
+                // msg: "Không đủ tiền để chi tiêu",
+              });
+            }
+          }
+        }
+      }
 
       // }
     }

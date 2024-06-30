@@ -175,6 +175,7 @@ const writeGGSheet = async (
   sheetLink,
   writedUserEmail
 ) => {
+  console.log(mention, category, remainingData, sheetLink, writedUserEmail);
 
   let money;
   let note = "";
