@@ -26,6 +26,7 @@ function Signup() {
   const [passwordError, setPasswordError] = useState("");
   const [confirmpasswordError, setConfirmpasswordError] = useState("");
   const [picError, setPicError] = useState("");
+  const [verifiError, setVerifiError] = useState("");
 
   const { loading, signup } = useSignup();
 
@@ -78,6 +79,7 @@ function Signup() {
         password,
         confirmPassword: confirmpassword,
         avatar: pic,
+        setVerifiError,
       });
     }
   };
@@ -233,6 +235,11 @@ function Signup() {
               </Typography>
             )}
           </CardBody>
+          {verifiError && (
+            <Typography color="red" variant="small" className="text-center">
+              {verifiError}
+            </Typography>
+          )}
           <CardFooter className="pt-0">
             <Button
               color="blue"

@@ -18,6 +18,7 @@ const useSignup = () => {
     password,
     confirmPassword,
     avatar,
+    setVerifiError
   }) => {
     setLoading(true);
     try {
@@ -45,7 +46,7 @@ const useSignup = () => {
       navigate("/");
       toast.success("Đăng ký tài khoản thành công");
     } catch (error) {
-      toast.error(error.message);
+      setVerifiError(error.response.data.error);
     } finally {
       setLoading(false);
     }

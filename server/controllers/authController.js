@@ -3,38 +3,40 @@ const generateToken = require("../config/generateTokenOld");
 const Chat = require("../models/chatModel");
 
 const signup = async (req, res) => {
-
   try {
     const { username, email, password, confirmPassword, avatar } = req.body;
 
     if (password !== confirmPassword) {
-      return res.status(400).json({ error: "Passwords don't match" });
+      return res.status(400).json({ error: "Mật khẩu không trùng khớp" });
     }
 
-    const user = await User.findOne({ username });
+    let user;
+    user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({ error: "Email đã tồn tại" });
+    }
+
+    user = await User.findOne({ username });
 
     if (user) {
-      return res.status(400).json({ error: "Username already exists" });
+      return res.status(400).json({ error: "Tài khoản đã tồn tại" });
     }
 
-    let data 
+    let data;
     if (avatar) {
       data = {
         username,
         email,
         password,
-        avatar
+        avatar,
       };
-    }
-    else {
+    } else {
       data = {
         username,
         email,
         password,
       };
     }
-
-
 
     const newUser = new User(data);
 
@@ -42,14 +44,14 @@ const signup = async (req, res) => {
       await newUser.save();
       // create chat to myself
 
-      const userId = newUser._id
+      const userId = newUser._id;
       const chat = await Chat.find({
         users: { $size: 1, $elemMatch: { $eq: userId } },
       });
       // nếu không có chat thì tạo chat
-      let newChat
+      let newChat;
       if (chat.length == 0) {
-         newChat = await Chat.create({
+        newChat = await Chat.create({
           chatName: "My Self Chat",
           users: [userId],
           isGroupChat: false,
@@ -57,8 +59,6 @@ const signup = async (req, res) => {
       } else {
         newChat = chat[0];
       }
-
-
 
       res.status(201).json({
         _id: newUser._id,
@@ -117,7 +117,5 @@ const logout = (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
-
 
 module.exports = { signup, login, logout };
