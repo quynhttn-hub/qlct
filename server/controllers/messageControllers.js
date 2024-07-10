@@ -201,16 +201,20 @@ const deleteMessage = asyncHandler(async (req, res) => {
 const updateMessage = asyncHandler(async (req, res) => {
   const { messageId } = req.params;
   const { content, mention, category, chatId } = req.body;
-  const chat = await Chat.findById(chatId);
 
   try {
+    const chat = await Chat.findById(chatId);
+    if (!chat) {
+      return res.status(404).json({ msg: "Chat not found" });
+    }
+
     const message = await Message.findById(messageId);
     if (!message) {
       return res.status(404).json({ msg: "Message not found" });
     }
 
     const currentTime = new Date();
-    const timeDifference = (currentTime - message.createdAt) / 1000 / 60; // Thời gian chênh lệch tính bằng phút
+    const timeDifference = (currentTime - message.createdAt) / 1000 / 60; // Time difference in minutes
 
     if (timeDifference > 5) {
       return res.status(403).json({
@@ -222,73 +226,65 @@ const updateMessage = asyncHandler(async (req, res) => {
     message.mention = mention;
     message.category = category;
     await message.save();
-    let messageUpdated = await Message.findById(messageId);
-    messageUpdated = await messageUpdated.populate("sender", "username avatar");
-    messageUpdated = await messageUpdated.populate("chat");
 
-    // check message
-    // if (mention) {
-    //   // nếu không có sheetId
-    //   if (!chat.sheetLink) {
-    //     res.status(200).json({
-    //       message,
-    //       msg: "Vui lòng tạo file quản lý để có thể ghi thông tin vào file",
-    //     });
-    //   } else {
-    //     if (!category) {
-    //       res.status(200).json({
-    //         message,
-    //         msg: "Nhập đầy đủ hạng mục chi tiêu",
-    //       });
-    //     } else {
-    //       const sliceRemaining = content.slice(
-    //         mention.position,
-    //         category.value.length + category.position + 1
-    //       );
-    //       const remain = content.replace(sliceRemaining, "").trim();
-    //       let money;
-    //       let note = "";
-    //       // Bước 2: Tách chuỗi thành hai phần dựa trên khoảng trắng đầu tiên
+    let messageUpdated = await Message.findById(messageId)
+      .populate("sender", "username avatar")
+      .populate("chat");
 
-    //       const firstSpaceIndex = remain.indexOf(" ");
-    //       if (firstSpaceIndex === -1) {
-    //         money = convertStringToNumber(remain);
-    //         note = "";
-    //       } else {
-    //         money = convertStringToNumber(remain.substring(0, firstSpaceIndex));
-    //         note = remain.substring(firstSpaceIndex + 1);
-    //       }
+    if (mention) {
+      if (!chat.sheetLink) {
+        return res.status(200).json({
+          message: messageUpdated,
+          msg: "Vui lòng tạo file quản lý để có thể ghi thông tin vào file",
+        });
+      }
 
-    //       if (!money) {
-    //         res.status(200).json({
-    //           message,
-    //           msg: `Vui lòng nhập số tiền bạn ${mention.value} `,
-    //         });
-    //       } else {
-    //         const remaining = await readRemaining(chat.sheetLink);
-    //         if (mention.value == "chi tiêu" && remaining - money < 0) {
-    //           res.status(200).json({
-    //             message,
-    //             msg: "Bạn đã chi tiêu vượt quá giới hạn",
-    //           });
-    //         } else {
-    //           res.status(200).json({
-    //             message,
-    //             // msg: "Không đủ tiền để chi tiêu",
-    //           });
-    //         }
-    //       }
-    //     }
-    //   }
+      if (!category) {
+        return res.status(200).json({
+          message: messageUpdated,
+          msg: "Nhập đầy đủ hạng mục chi tiêu",
+        });
+      }
 
-    //   // }
-    // }
+      const sliceRemaining = content.slice(
+        mention.position,
+        category.value.length + category.position + 1
+      );
+      const remain = content.replace(sliceRemaining, "").trim();
+      let money;
+      let note = "";
 
-    res.status(200).json({ msg: "Message updated", message: messageUpdated });
+      const firstSpaceIndex = remain.indexOf(" ");
+      if (firstSpaceIndex === -1) {
+        money = convertStringToNumber(remain);
+        note = "";
+      } else {
+        money = convertStringToNumber(remain.substring(0, firstSpaceIndex));
+        note = remain.substring(firstSpaceIndex + 1);
+      }
+
+      if (!money) {
+        return res.status(200).json({
+          message: messageUpdated,
+          msg: `Vui lòng nhập số tiền bạn ${mention.value} `,
+        });
+      }
+
+      const remaining = await readRemaining(chat.sheetLink);
+      if (mention.value === "chi tiêu" && remaining - money < 0) {
+        return res.status(200).json({
+          message: messageUpdated,
+          msg: "Bạn đã chi tiêu vượt quá giới hạn",
+        });
+      }
+    }
+
+    return res.status(200).json({ message: messageUpdated });
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ msg: "Server error" });
+    return res.status(500).json({ msg: "Server error" });
   }
 });
+
 
 module.exports = { allMessages, sendMessage, deleteMessage, updateMessage };
