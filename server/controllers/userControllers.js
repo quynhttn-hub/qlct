@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
-const generateToken = require("../config/generateToken");
-const { createNewSheet } = require("../googleSheet/googleSheetHandler");
+const generateToken = require("../config/generateTokenOld");
+const Chat = require("../models/chatModel");
 
 //@description     Get or Search all users
 //@route           GET /api/user?search=
@@ -73,7 +73,28 @@ const updateUser = asyncHandler(async (req, res) => {
   }
   const updatedUser = await user.save();
 
-  res.json(updatedUser);
+  const myChat = await Chat.find({
+    users: { $size: 1, $elemMatch: { $eq: updatedUser._id } },
+  });
+
+
+  console.log({
+    _id: updatedUser._id,
+    username: updatedUser.username,
+    avatar: updatedUser.avatar,
+    email: updatedUser.email,
+    token: generateToken(updatedUser._id),
+    // myChat: myChat[0],
+  });
+
+  res.json({
+    _id: updatedUser._id,
+    username: updatedUser.username,
+    avatar: updatedUser.avatar,
+    email: updatedUser.email,
+    token: generateToken(updatedUser._id),
+    myChat: myChat[0],
+  });
 });
 
 module.exports = {

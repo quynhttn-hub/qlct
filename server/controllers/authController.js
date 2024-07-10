@@ -93,7 +93,10 @@ const login = async (req, res) => {
       return res.status(400).json({ error: "Invalid username or password" });
     }
 
-    // generateTokenAndSetCookie(user._id, res);
+    const myChat = await Chat.find({
+      users: { $size: 1, $elemMatch: { $eq: user._id } },
+    });
+
 
     res.status(200).json({
       _id: user._id,
@@ -101,6 +104,7 @@ const login = async (req, res) => {
       avatar: user.avatar,
       email: user.email,
       token: generateToken(user._id),
+      myChat: myChat[0],
     });
   } catch (error) {
     console.log("Error in login controller", error.message);

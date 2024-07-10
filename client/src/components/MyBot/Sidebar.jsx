@@ -100,6 +100,7 @@ export function Sidebar() {
         { chatId },
         config
       );
+      setMyChat(data.chat);
       setFileLink(data.sheetLink);
     } catch (error) {
       console.log(error);

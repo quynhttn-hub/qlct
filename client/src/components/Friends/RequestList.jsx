@@ -82,12 +82,12 @@ const RequestList = () => {
   };
 
   return (
-    <div>
-      <div className="h-1/2 justify-center pt-3">
+    <>
+      <div className="h-1/2 justify-center pt-3 overflow-y-auto">
         <Typography variant="h5" color="blue-gray">
           Lời mời kết bạn
         </Typography>
-        <div className="overflow-y-auto">
+        <div className="">
           {requests && requests.length > 0 ? (
             requests.map((request) => (
               <div key={request.id} className="flex items-center gap-3 p-2">
@@ -139,7 +139,7 @@ const RequestList = () => {
           )}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

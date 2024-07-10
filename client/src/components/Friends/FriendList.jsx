@@ -44,7 +44,7 @@ const FriendList = () => {
 
   return (
     <>
-      <div className="h-1/2 justify-center pt-3">
+      <div className="h-1/2 justify-center pt-3 overflow-y-auto">
         <Typography variant="h5" color="blue-gray">
           Bạn bè
         </Typography>

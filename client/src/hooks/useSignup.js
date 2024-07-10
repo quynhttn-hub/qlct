@@ -40,6 +40,8 @@ const useSignup = () => {
         config
       );
 
+      console.log(data);
+
       setMyChat(data.myChat);
       localStorage.setItem("chat-user", JSON.stringify(data));
       setAuthUser(data);

@@ -191,10 +191,7 @@ const createSheetForChat = asyncHandler(async (req, res) => {
     if (!updatedChat) {
       return res.status(404).json({ message: "Chat not found" });
     }
-    // res.send({ sheetId });
-
-    // Trả về danh sách email
-    res.status(200).json({ sheetLink: sheetLink });
+    res.status(200).json({ sheetLink: sheetLink, chat: updatedChat });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ msg: "Server error" });
