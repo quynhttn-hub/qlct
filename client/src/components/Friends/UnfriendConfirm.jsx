@@ -5,29 +5,29 @@ import { useAuthContext } from "../../Context/AuthContext";
 import { useFriendsContext } from "../../Context/useFriendsContext";
 import { apiUrl } from "../../../setupAxios";
 export function UnfriendConfirm({ setOpen, friend }) {
-    const { authUser } = useAuthContext();
-    const {setFriends} = useFriendsContext();
+  const { authUser } = useAuthContext();
+  const { friends , setFriends } = useFriendsContext();
 
   const handlerUnFriend = async () => {
+    console.log(friends);
     const config = {
       headers: {
         Authorization: `Bearer ${authUser.token}`,
       },
-      };
-      
-      await axios
-        .post(
-          `${apiUrl}/api/friend/unfiend`,
-          { userId: authUser._id, friendId: friend._id || friend.id },
-          config
-        )
-        .then((response) => {
-            setOpen(false);
-            setFriends((prev) => prev.filter((f) => f._id !== friend._id));
-        })
-        .catch((error) => {
-          toast.error(error.message);
-        });
+    };
+    await axios
+      .post(
+        `${apiUrl}/api/friend/unfiend`,
+        { userId: authUser._id, friendId: friend._id || friend.id },
+        config
+      )
+      .then((response) => {
+        setOpen(false);
+        setFriends((prev) => prev.filter((f) => f._id !== friend._id || f.id !== friend.id));
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
   };
 
   return (
