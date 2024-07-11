@@ -116,7 +116,7 @@ const sendMessage = asyncHandler(async (req, res) => {
             .catch((error) => {
               console.log(error);
             });
-        }, 10000); // sửa lại nha
+        }, 300000); // sửa lại nha
 
         if (!category) {
           res.status(200).json({

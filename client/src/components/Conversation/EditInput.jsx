@@ -16,13 +16,23 @@ const EditInput = ({ m, setEdit, setMess }) => {
   const [mention, setMention] = useState(m.mention);
   const [category, setCategory] = useState(m.category);
   const [loading, setLoading] = useState(false);
-  const {authUser} = useAuthContext();
+  const { authUser } = useAuthContext();
+
+  const { messages, setMessages } = useOurCategoriesContext();
 
   const [subcategories, setSubcategories] = useState([]);
 
   const categories = ["chi tiêu", "lập kế hoạch", "thu nhập"];
 
   // const subcategories = ["quần áo", "sức khỏe", "cafe"];
+  useEffect(() => {
+    if (!inputValue.includes(mention?.value)) {
+      setMention(null);
+    }
+    if (!inputValue.includes(category?.value)) {
+      setCategory(null);
+    }
+  }, [inputValue, mention, category]);
 
   useEffect(() => {
     if (ourCategories) {
@@ -108,23 +118,27 @@ const EditInput = ({ m, setEdit, setMess }) => {
         },
       };
 
-
       const { data } = await axios.put(
         `${apiUrl}/api/message/update/${m._id}`,
         {
           mention: mention,
           category: category,
           content: inputValue,
-          //   chatId: myChat?._id,
+          chatId: selectedChat?._id,
         },
         config
       );
 
-      //   setMessages([...messages, data]);
-      // console.log(data.mention);
+      const index = messages.findIndex((message) => message._id === m._id);
+      const newMessages = [...messages];
+      newMessages[index] = data.message;
+      setMessages(newMessages);
+
       setMess(data.message);
       setEdit(false);
-      // toast.success("Đã sửa tin nhắn");
+      if (data.msg) {
+        toast.warning(data.msg);
+      }
     } catch (error) {
       if (error.response && error.response.status === 403) {
         toast.error(
@@ -133,7 +147,9 @@ const EditInput = ({ m, setEdit, setMess }) => {
       } else {
         console.error("There was an error editing the message!", error);
       }
-    } finally { setEdit(false); }
+    } finally {
+      setEdit(false);
+    }
     setLoading(false);
   };
 
@@ -165,7 +181,7 @@ const EditInput = ({ m, setEdit, setMess }) => {
           value={inputValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          placeholder="Gõ @ để gọi chi tiêu/lập kế hoạch/thu nhập, gõ / để gọi hạng mục/loại thu nhập"
+          placeholder="Gõ @ để gọi chi tiêu/lập kế hoạch/thu nhập, gõ / để gọi hạng mục/loại thu nhập. VD: @chi tiêu /quần áo 200k"
         />
         {loading && (
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">

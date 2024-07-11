@@ -31,7 +31,6 @@ export function Sidebar() {
   const [visableClick, setVisableClick] = useState(true);
   const { authUser } = useAuthContext();
 
-  console.log(authUser);
 
 
   useEffect(() => {
@@ -100,6 +99,8 @@ export function Sidebar() {
         { chatId },
         config
       );
+      authUser.myChat = data.chat;
+      localStorage.setItem("chat-user", JSON.stringify(authUser));
       setMyChat(data.chat);
       setFileLink(data.sheetLink);
     } catch (error) {

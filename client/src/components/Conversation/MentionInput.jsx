@@ -187,7 +187,7 @@ const MentionInput = ({ setFetchAgain }) => {
           value={inputValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          placeholder="Gõ @ để gọi chi tiêu/lập kế hoạch/thu nhập, gõ / để gọi hạng mục/loại thu nhập"
+          placeholder="Gõ @ để gọi chi tiêu/lập kế hoạch/thu nhập, gõ / để gọi hạng mục/loại thu nhập. VD: @chi tiêu /quần áo 200k"
         />
         {loading && (
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">

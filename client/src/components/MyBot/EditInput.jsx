@@ -10,9 +10,10 @@ import { useAuthContext } from "../../Context/AuthContext";
 const EditInput = ({ m, setEdit, setMess }) => {
   const { myChat } = ChatState();
 
-  const {authUser} = useAuthContext();
+  const { authUser } = useAuthContext();
 
   const { myCategory } = useCategoryContext();
+  const { messages, setMessages } = useConversation();
 
   const [inputValue, setInputValue] = useState(m.content);
   const [suggestions, setSuggestions] = useState([]);
@@ -26,7 +27,14 @@ const EditInput = ({ m, setEdit, setMess }) => {
 
   const categories = ["chi tiêu", "lập kế hoạch", "thu nhập"];
 
-  // const subcategories = ["quần áo", "sức khỏe", "cafe"];
+  useEffect(() => {
+    if (!inputValue.includes(mention?.value)) {
+      setMention(null);
+    }
+    if (!inputValue.includes(category?.value)) {
+      setCategory(null);
+    }
+  }, [inputValue, mention, category]);
 
   useEffect(() => {
     if (myCategory) {
@@ -112,34 +120,36 @@ const EditInput = ({ m, setEdit, setMess }) => {
         },
       };
 
-
       const { data } = await axios.put(
         `${apiUrl}/api/message/update/${m._id}`,
         {
           mention: mention,
           category: category,
           content: inputValue,
-          //   chatId: myChat?._id,
+          chatId: myChat?._id,
         },
         config
       );
 
-      //   setMessages([...messages, data]);
-      // console.log(data.mention);
+      const index = messages.findIndex((message) => message._id === m._id);
+      const newMessages = [...messages];
+      newMessages[index] = data.message;
+      setMessages(newMessages);
+
       setMess(data.message);
       setEdit(false);
-      // toast.success("Đã sửa tin nhắn");
+      if (data.msg) {
+        toast.warning(data.msg);
+      }
     } catch (error) {
       if (error.response && error.response.status === 403) {
         toast.error(
           "Bạn chỉ có thể sửa tin nhắn trong vòng 5 phút kể từ khi gửi"
         );
-        
       } else {
         console.error("Đã có lỗi xảy ra", error);
       }
       setEdit(false);
-
     }
     setLoading(false);
   };
@@ -148,8 +158,6 @@ const EditInput = ({ m, setEdit, setMess }) => {
     <div className="w-full mx-auto border rounded-lg shadow-md bg-white">
       {showSuggestions && (
         <ul
-          //   role="menu"
-          //   data-popover="menu"
           data-popover-placement="top"
           className=" z-10 overflow-auto rounded-md border border-blue-gray-50 bg-white p-3 font-sans text-sm font-normal text-blue-gray-800 shadow-lg shadow-blue-gray-500/10 focus:outline-none"
         >
@@ -172,7 +180,7 @@ const EditInput = ({ m, setEdit, setMess }) => {
           value={inputValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          placeholder="Gõ @ để gọi chi tiêu/lập kế hoạch/thu nhập, gõ / để gọi hạng mục/loại thu nhập"
+          placeholder="Gõ @ để gọi chi tiêu/lập kế hoạch/thu nhập, gõ / để gọi hạng mục/loại thu nhập. VD: @chi tiêu /quần áo 200k"
         />
         {loading && (
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">

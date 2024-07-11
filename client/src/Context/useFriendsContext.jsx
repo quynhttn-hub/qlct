@@ -14,7 +14,6 @@ export const FriendsProvider = ({ children }) => {
   const [friends, setFriends] = useState([]);
   const { authUser } = useAuthContext();
   
-  console.log(authUser);
 
   useEffect(() => {
     if (!authUser) return;
