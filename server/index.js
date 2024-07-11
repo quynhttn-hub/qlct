@@ -9,7 +9,7 @@ const authRouter = require("./routes/authRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const friendRoutes = require("./routes/friendRoutes");
 const incomeRoutes = require("./routes/incomeRoutes");
-const { notFound, errorHandler } = require("./middleware/errorMiddleware")
+const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const path = require("path");
 const cors = require("cors");
 const http = require("http");
@@ -93,6 +93,29 @@ io.on("connection", (socket) => {
         socket.in(userId).emit("message recieved", message);
       });
     }
+  });
+
+  socket.on("delete message", (message) => {
+    var chat = message.chat;
+    var senderId = message.sender._id;
+    if (!chat.users) return console.log("chat.users not defined");
+    chat.users.forEach((user) => {
+      const userId = user._id;
+      if (userId === senderId) return;
+      socket.in(userId).emit("delete message recieved", message);
+    });
+  });
+
+  socket.on("update message", (message) => {
+    var chat = message.chat;
+    var senderId = message.sender._id;
+    if (!chat.users) return console.log("chat.users not defined");
+    chat.users.forEach((user) => {
+      const userId = user._id;
+      if (userId === senderId) return;
+      console.log("UPDATE MESSAGE RECIEVED: ", message);
+      socket.in(userId).emit("update message recieved", message);
+    });
   });
 
   socket.on("new notification", (notification) => {

@@ -5,6 +5,9 @@ import { toast } from "react-toastify";
 import { useOurCategoriesContext } from "../../Context/useOurCategories";
 import { apiUrl } from "../../../setupAxios";
 import { useAuthContext } from "../../Context/AuthContext";
+import io from "socket.io-client";
+const ENDPOINT = apiUrl;
+var socket;
 
 const EditInput = ({ m, setEdit, setMess }) => {
   const { selectedChat } = ChatState();
@@ -25,6 +28,21 @@ const EditInput = ({ m, setEdit, setMess }) => {
   const categories = ["chi tiêu", "lập kế hoạch", "thu nhập"];
 
   // const subcategories = ["quần áo", "sức khỏe", "cafe"];
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", authUser);
+  }, []);
+
+  useEffect(() => {
+    socket.on("update message recieved", (message) => {
+      console.log(message);
+      const index = messages.findIndex((m) => message._id === m._id);
+      const newMessages = [...messages];
+      newMessages[index] = message;
+      setMessages(newMessages);
+    });
+  });
+
   useEffect(() => {
     if (!inputValue.includes(mention?.value)) {
       setMention(null);
@@ -136,6 +154,7 @@ const EditInput = ({ m, setEdit, setMess }) => {
 
       setMess(data.message);
       setEdit(false);
+      socket.emit("update message", data.message);
       if (data.msg) {
         toast.warning(data.msg);
       }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import { Avatar } from "@material-tailwind/react";
 import { format } from "date-fns";
@@ -7,6 +7,9 @@ import EditInput from "./EditInput";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { apiUrl } from "../../../setupAxios";
+import io from "socket.io-client";
+const ENDPOINT = apiUrl;
+var socket;
 
 const Message = ({ m, messages, setMessages }) => {
   const { authUser } = useAuthContext();
@@ -36,6 +39,11 @@ const Message = ({ m, messages, setMessages }) => {
     setEdit((cur) => !cur);
   };
 
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", authUser);
+  }, []);
+
   const handlerDeleteMessage = async () => {
     const config = {
       headers: {
@@ -48,6 +56,8 @@ const Message = ({ m, messages, setMessages }) => {
       .then((res) => {
         const newMessages = messages.filter((message) => message._id !== m._id);
         setMessages(newMessages);
+        socket.emit("delete message", m);
+        
       })
       .catch((err) => {
         if (err.response && err.response.status === 403) {

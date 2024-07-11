@@ -3,17 +3,30 @@ import ScrollableFeed from "react-scrollable-feed";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { apiUrl } from "../../../setupAxios";
-
-
 import { ChatState } from "../../Context/ChatProvider";
 import { useAuthContext } from "../../Context/AuthContext";
 import { useOurCategoriesContext } from "../../Context/useOurCategories";
 import Message from "./Message";
+import io from "socket.io-client";
+const ENDPOINT = apiUrl;
+var socket;
 
 const MessageBox = () => {
   const { authUser } = useAuthContext();
   const { selectedChat } = ChatState();
   const { messages, setMessages } = useOurCategoriesContext();
+
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", authUser);
+  }, []);
+
+  useEffect(() => {
+    socket.on("delete message recieved", (message) => {
+      const newMessages = messages.filter((m) => message._id !== m._id);
+      setMessages(newMessages);
+    });
+  });
 
   useEffect(() => {
     const getMessages = async () => {

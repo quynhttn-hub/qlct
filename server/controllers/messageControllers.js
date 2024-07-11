@@ -62,6 +62,7 @@ const sendMessage = asyncHandler(async (req, res) => {
     if (!mention) {
       res.status(200).json({
         message,
+        msg:"Gửi tin nhắn thành công. Bạn có thể sửa tin nhắn trong vòng 5 phút"
       });
     }
     // ghi vào file
@@ -152,12 +153,13 @@ const sendMessage = asyncHandler(async (req, res) => {
             if (mention.value == "chi tiêu" && remaining - money < 0) {
               res.status(200).json({
                 message,
-                msg: "Bạn đã chi tiêu vượt quá giới hạn",
+                msg: "Bạn đã chi tiêu vượt quá giới hạn. Bạn có thể chỉnh sửa tin nhắn trong 5 phút. Sau 5 phút thông tin sẽ được lưu vào file",
               });
             } else {
               res.status(200).json({
                 message,
-                // msg: "Không đủ tiền để chi tiêu",
+                
+                msg: "Gửi tin nhắn thành công. Bạn có thể chỉnh sửa tin nhắn trong 5 phút. Sau 5 phút thông tin sẽ được lưu vào file",
               });
             }
           }
@@ -274,12 +276,12 @@ const updateMessage = asyncHandler(async (req, res) => {
       if (mention.value === "chi tiêu" && remaining - money < 0) {
         return res.status(200).json({
           message: messageUpdated,
-          msg: "Bạn đã chi tiêu vượt quá giới hạn",
+          msg: "Bạn đã chi tiêu vượt quá giới hạn. Bạn có thể chỉnh sửa tin nhắn trong 5 phút. Sau 5 phút thông tin sẽ được lưu vào file",
         });
       }
     }
 
-    return res.status(200).json({ message: messageUpdated });
+    return res.status(200).json({ message: messageUpdated, msg: "Gửi tin nhắn thành công. Bạn có thể chỉnh sửa tin nhắn trong 5 phút. Sau 5 phút thông tin sẽ được lưu vào file" });
   } catch (err) {
     console.error(err.message);
     return res.status(500).json({ msg: "Server error" });
